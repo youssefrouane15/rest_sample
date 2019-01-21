@@ -17,7 +17,8 @@ public class Employee {
     private LocalDate birthDate;
     @ElementCollection
     private List<String> technologies;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code")
     private Client client;
 
 
@@ -80,6 +81,12 @@ public class Employee {
         return id;
     }
 
+    public Client getClient() {
+        return client;
+    }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }
 

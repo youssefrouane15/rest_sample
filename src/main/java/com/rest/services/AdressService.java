@@ -4,7 +4,7 @@ import com.rest.domains.Adress;
 
 import java.util.Optional;
 
-public interface IAdressService {
+public interface AdressService {
     public Iterable<Adress> findAll();
 
     public Optional<Adress> findById(long id);

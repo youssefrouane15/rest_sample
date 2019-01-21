@@ -13,9 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("emloyeeService")
-public class IEmployeeServiceImpl implements IEmployeService {
-    @Autowired
+public class EmployeeServiceImpl implements EmployeService {
     private EmployeeRepository employeeRepository;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public List<Employee> findAll() {
@@ -42,7 +45,14 @@ public class IEmployeeServiceImpl implements IEmployeService {
 
     @Override
     public List<Employee> findByClientCode(String code) {
-        return null;
+        List<Employee> employees = new ArrayList<>();
+        Client client = new Client("1", "Orange");
+        List<String> technologies = new ArrayList<>();
+        technologies.add("React JS");
+        technologies.add("Spring");
+        Employee employee = new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client);
+        employees.add(employee);
+        return employees;
     }
 
     @Override

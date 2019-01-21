@@ -2,7 +2,7 @@ package com.rest.controllers;
 
 
 import com.rest.domains.Employee;
-import com.rest.services.IEmployeeServiceImpl;
+import com.rest.services.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private IEmployeeServiceImpl employeeService;
+    private EmployeeServiceImpl employeeService;
 
     @GetMapping
     public List<Employee> findAll() {

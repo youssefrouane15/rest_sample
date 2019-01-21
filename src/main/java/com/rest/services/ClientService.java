@@ -5,7 +5,7 @@ import com.rest.domains.Client;
 import java.util.List;
 import java.util.Optional;
 
-public interface IClientService {
+public interface ClientService {
     public List<Client> findAll();
 
     public Optional<Client> findById(long id);

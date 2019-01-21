@@ -5,7 +5,7 @@ import com.rest.domains.Employee;
 import java.util.List;
 import java.util.Optional;
 
-public interface IEmployeService {
+public interface EmployeService {
     public List<Employee> findAll();
 
     public Optional<Employee> findById(long id);

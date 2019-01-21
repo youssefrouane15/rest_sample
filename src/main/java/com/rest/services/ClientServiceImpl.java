@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("clientService")
-public class IClientServiceImpl implements IClientService {
-    @Autowired
+public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
+
+    public ClientServiceImpl(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
+
     @Override
     public List<Client> findAll() {
         return (List<Client>) clientRepository.findAll();

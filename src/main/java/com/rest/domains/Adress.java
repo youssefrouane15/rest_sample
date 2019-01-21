@@ -1,8 +1,6 @@
 package com.rest.domains;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Adress {
@@ -12,14 +10,18 @@ public class Adress {
     private String libelleCourt;
     private String libelleLong;
     private String codePostal;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adress")
+    private Client client;
 
     public Adress() {
     }
 
-    public Adress(String libelleCourt, String libelleLong, String codePostal) {
+    public Adress(String libelleCourt, String libelleLong, String codePostal, Client client) {
         this.libelleCourt = libelleCourt;
         this.libelleLong = libelleLong;
         this.codePostal = codePostal;
+        this.client = client;
     }
 
     public long getId() {
@@ -52,5 +54,13 @@ public class Adress {
 
     public void setCodePostal(String codePostal) {
         this.codePostal = codePostal;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("adressService")
-public class IAdressServiceImpl implements  IAdressService{
-    @Autowired
+public class AdressServiceImpl implements AdressService {
     private AdressRepository adressRepository;
+
+    public AdressServiceImpl(AdressRepository adressRepository) {
+        this.adressRepository = adressRepository;
+    }
+
     @Override
     public List<Adress> findAll() {
         return (List<Adress>) adressRepository.findAll();
