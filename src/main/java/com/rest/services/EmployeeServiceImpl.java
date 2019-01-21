@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeService {
     @Override
     public List<Employee> findByClientCode(String code) {
         List<Employee> employees = new ArrayList<>();
-        Client client = new Client("1", "Orange");
+        Client client = new Client(code, "Orange");
         List<String> technologies = new ArrayList<>();
         technologies.add("React JS");
         technologies.add("Spring");
