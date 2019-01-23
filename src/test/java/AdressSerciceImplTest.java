@@ -20,15 +20,15 @@ public class AdressSerciceImplTest {
     @Mock
     AdressRepository adressRepository;
     @InjectMocks
-    AdressServiceImpl adressServiceImpl =new AdressServiceImpl(adressRepository);
+    AdressServiceImpl adressServiceImpl = new AdressServiceImpl(adressRepository);
 
     @Test
-    public void testFindAllAdress(){
+    public void testFindAllAdress() {
         List<Adress> adresses = new ArrayList<>();
         Client client1 = new Client("1", "Societe generale");
-        Client  client2 =new Client("2", "ALMA Group");
-        Adress adress  = new Adress("bellini","3 Rue","75008",client1);
-        Adress adress2  = new Adress("Boetie","Rue 124","75008",client2);
+        Client client2 = new Client("2", "ALMA Group");
+        Adress adress = new Adress("bellini", "3 Rue", "75008", client1);
+        Adress adress2 = new Adress("Boetie", "Rue 124", "75008", client2);
         adresses.add(adress);
         adresses.add(adress2);
         when(adressRepository.findAll()).thenReturn(adresses);

@@ -19,10 +19,6 @@ public class Client {
     private Adress adress;
 
 
-
-
-
-
     public Client() {
     }
 
@@ -42,32 +38,32 @@ public class Client {
         return id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public void setCode(String code) {
         this.code = code;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public Adress getAdress() {
