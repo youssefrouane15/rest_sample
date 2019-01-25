@@ -20,7 +20,7 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.rest")
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories(basePackages={"com.rest"})
+@EnableJpaRepositories(basePackages = {"com.rest"})
 public class ApplicationConfiguration {
 
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
@@ -32,13 +32,12 @@ public class ApplicationConfiguration {
     private static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
 
 
-
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
 
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
-
+    private static final String PROPERTY_NAME_HBM2DLL_AUTO = "hibernate.hbm2ddl.auto";
 
 
     @Resource
@@ -46,12 +45,10 @@ public class ApplicationConfiguration {
     private Environment env;
 
 
-
     @Bean
     public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
 
 
         dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
@@ -63,11 +60,9 @@ public class ApplicationConfiguration {
         dataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
 
 
-
         return dataSource;
 
     }
-
 
 
     @Bean
@@ -83,15 +78,12 @@ public class ApplicationConfiguration {
         entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN));
 
 
-
         entityManagerFactoryBean.setJpaProperties(hibProperties());
-
 
 
         return entityManagerFactoryBean;
 
     }
-
 
 
     private Properties hibProperties() {
@@ -101,11 +93,10 @@ public class ApplicationConfiguration {
         properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
 
         properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
-
+        properties.put(PROPERTY_NAME_HBM2DLL_AUTO, env.getRequiredProperty(PROPERTY_NAME_HBM2DLL_AUTO));
         return properties;
 
     }
-
 
 
     @Bean
@@ -119,11 +110,6 @@ public class ApplicationConfiguration {
         return transactionManager;
 
     }
-
-
-
-
-
 
 
 }

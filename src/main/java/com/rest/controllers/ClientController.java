@@ -1,71 +1,97 @@
 package com.rest.controllers;
 
-import com.rest.dao.ClientRepository;
-import com.rest.domains.Adress;
 import com.rest.domains.Client;
-import com.rest.domains.Employee;
+import com.rest.exception.ClientException;
 import com.rest.services.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @apiNote Rest Controller Client version 1
+ * Determines all api rest for clients
+ */
 @RestController
 public class ClientController {
     @Autowired
-    ClientServiceImpl clientServiceImp;
+    private ClientServiceImpl clientServiceImp;
 
+    /**
+     * @param clientServiceImp Injection by constructor for the client service
+     */
     public ClientController(ClientServiceImpl clientServiceImp) {
         this.clientServiceImp = clientServiceImp;
     }
 
-    @GetMapping("/clients")
+    /**
+     * @return List of clients
+     */
+    @GetMapping("/v1/clients")
     public List<Client> getAllClients() {
         return clientServiceImp.findAll();
     }
 
-    @GetMapping("/clients/{id}")
-    public Client getClient(@PathVariable(name = "id") Long id) throws RuntimeException {
-
-        Client client = clientServiceImp.findById(id).orElseThrow(() -> new RuntimeException("Client not found on ::"+id));
+    /**
+     * @param id
+     * @return client object; this method will get the client by id and il will genere
+     * @throws ClientException when client not found
+     */
+    @GetMapping("/v1/clients/{id}")
+    public Client getClientById(@PathVariable(name = "id") long id) throws Exception {
+        Client client = clientServiceImp.findById(id).get();
+        if (null == client) {
+            throw new ClientException("Client Not Found with id :" + id);
+        }
         return client;
     }
 
-    @GetMapping("/clients/{code}")
+    /**
+     * @param code
+     * @return Client by code
+     */
+    @GetMapping("/v1/clients/{code}")
     public Client getClientByCode(@PathVariable(name = "code") String code) {
-        return clientServiceImp.findByCode(code);
-    }
-
-    @GetMapping("/clients/{code}/employees")
-    public List<Employee> getAllEmployeByClient(@PathVariable(name = "code") String code) {
-       Client c =clientServiceImp.findByCode(code);
-       return c.getEmployees();
-    }
-
-    @GetMapping("/clients/{code}/adress")
-    public Adress getAdressClient(@PathVariable(name = "code") String code) {
-        return clientServiceImp.findByCode(code).getAdress();
-    }
-
-    @PostMapping("/clients")
-    public void saveClient(Client client) {
-        clientServiceImp.save(client);
-        System.out.println("Client Saved Successfully");
-    }
-
-    @DeleteMapping("/clients/{id}")
-    public void deleteClient(@PathVariable(name = "id") Long id) {
-        clientServiceImp.deleteById(id);
-        System.out.println("Client Deleted Successfully");
-    }
-
-    @PutMapping("/clients/{id}")
-    public void updateEmployee(@RequestBody Client client,
-                               @PathVariable(name = "id") Long id) {
-        Client clt = clientServiceImp.findById(id).get();
-        if (clt != null) {
-            clientServiceImp.updateClient(client);
+        Client client = clientServiceImp.findByCode(code);
+        if (null == client) {
+            throw new ClientException("Client Not Found with code :" + code);
         }
+        return client;
     }
+
+    /**
+     * @param client Save a new client
+     */
+    @PostMapping("/v1/clients")
+    public Client saveClient(@RequestBody Client client) {
+        clientServiceImp.save(client);
+        return client;
+    }
+
+    /**
+     * @param id ; Delete client by id
+     */
+    @DeleteMapping("/v1/clients/{id}")
+    public void deleteClient(@PathVariable(name = "id") long id) {
+        clientServiceImp.deleteById(id);
+    }
+
+    /**
+     * @param client
+     * @param id     Update client
+     */
+    @PutMapping("/v1/clients/{id}")
+    public void updateEmployee(@RequestBody Client client,
+                               @PathVariable(name = "id") long id) {
+        Client clnt = clientServiceImp.findById(id).get();
+        if (clnt != null) {
+            clnt.setCode(client.getCode());
+            clnt.setName(client.getName());
+            clnt.setAdress(client.getAdress());
+            clientServiceImp.save(clnt);
+        }
+
+    }
+
 
 }

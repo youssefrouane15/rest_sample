@@ -12,12 +12,9 @@ public class Client {
     private long id;
     private String code;
     private String name;
-    @OneToMany(mappedBy = "client")
-    private List<Employee> employees;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adress_id")
+    @JoinColumn(name = "id")
     private Adress adress;
-
 
     public Client() {
     }
@@ -27,10 +24,9 @@ public class Client {
         this.name = name;
     }
 
-    public Client(String code, String name, List<Employee> employees, Adress adress) {
+    public Client(String code, String name,  Adress adress) {
         this.code = code;
         this.name = name;
-        this.employees = employees;
         this.adress = adress;
     }
 
@@ -58,13 +54,13 @@ public class Client {
         this.name = name;
     }
 
-    public List<Employee> getEmployees() {
+    /*public List<Employee> getEmployees() {
         return employees;
     }
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
-    }
+    }*/
 
     public Adress getAdress() {
         return adress;
