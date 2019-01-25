@@ -1,5 +1,6 @@
 package com.rest.controllers;
 
+import com.rest.domains.Adress;
 import com.rest.domains.Client;
 import com.rest.exception.ClientException;
 import com.rest.services.ClientServiceImpl;
@@ -18,7 +19,7 @@ public class ClientController {
     private ClientServiceImpl clientServiceImp;
 
     /**
-     * @param clientServiceImp Injection by constructor for the client service
+     * @param clientServiceImp Injection by constructor for the clientServiceImp
      */
     public ClientController(ClientServiceImpl clientServiceImp) {
         this.clientServiceImp = clientServiceImp;
@@ -57,6 +58,15 @@ public class ClientController {
             throw new ClientException("Client Not Found with code :" + code);
         }
         return client;
+    }
+
+    @GetMapping("/v1/clients/{id}/adress")
+    public Adress getAdressClient(@PathVariable(name = "id") long id) throws Exception {
+        Client client = clientServiceImp.findById(id).get();
+        if (null == client) {
+            throw new ClientException("Client Not Found with id :" + id);
+        }
+        return client.getAdress();
     }
 
     /**
