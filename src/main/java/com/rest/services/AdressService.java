@@ -5,15 +5,10 @@ import com.rest.domains.Adress;
 import java.util.Optional;
 
 public interface AdressService {
-    public Iterable<Adress> findAll();
-
-    public Optional<Adress> findById(long id);
-
-    public Adress findByLibelle(String libelle);
-
-    public void save(Adress a);
-
-    public void delete();
-
-    public void deleteById(long id);
+     Iterable<Adress> findAll();
+     Adress findById(long id);
+     Adress findByLibelle(String libelle);
+     void save(Adress a);
+     void delete();
+     void deleteById(long id);
 }
