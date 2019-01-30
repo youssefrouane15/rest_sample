@@ -1,13 +1,10 @@
 package com.rest.services;
 
 import com.rest.dao.EmployeeRepository;
-import com.rest.domains.Client;
-import com.rest.domains.CurrentPosition;
 import com.rest.domains.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rest.exceptions.NoDataFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,59 +12,123 @@ import java.util.Optional;
 @Service("emloyeeService")
 public class EmployeeServiceImpl implements EmployeService {
     private EmployeeRepository employeeRepository;
+    private final String EMP_WITH_ID_NOT_FOUND_ERROR="No Employee found with the given Id";
+    private final String EMP_WITH_NAME_NOT_FOUND_ERROR="No Employee found with the given name";
+    private final String EMP_WITH_CODE_NOT_FOUND_ERROR="No Employees found with the given client code";
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public List<Employee> findAll() {
-        Client client = new Client("1", "Société générale");
+    public List<Employee> findAll() throws Exception {
         List<Employee> employees = new ArrayList<>();
-        List<String> technologies = new ArrayList<>();
-        technologies.add("JAVA EE");
-        technologies.add("Spring");
-        employees.add(new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client));
-        //return employeeRepository.findAll();
-        employees.add(new Employee(CurrentPosition.Architect, "Sondes", "Hamza", LocalDate.of(1993, 10, 11), technologies, client));
+        try {
+            employees = (List<Employee>) employeeRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
         return employees;
     }
 
     @Override
-    public Optional<Employee> findById(long id) {
-        return employeeRepository.findById(id);
+    public Optional<Employee> findById(long id) throws Exception {
+        Optional<Employee> e;
+        try {
+            e = employeeRepository.findById(id);
+            if (!e.isPresent()) {
+                throw new NoDataFoundException(EMP_WITH_ID_NOT_FOUND_ERROR);
+            }
+        } catch (NoDataFoundException e1) {
+            throw new NoDataFoundException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+        return e;
     }
 
     @Override
-    public Employee findByName(String name) {
-        return employeeRepository.findByFirstName(name);
+    public Employee findByName(String name) throws Exception {
+        Employee employee = null;
+        try {
+            employee = employeeRepository.findByFirstName(name);
+            if (employee == null) {
+                throw new NoDataFoundException(EMP_WITH_NAME_NOT_FOUND_ERROR);
+            }
+        } catch (NoDataFoundException e1) {
+            throw new NoDataFoundException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+        return employee;
     }
 
     @Override
-    public List<Employee> findByClientCode(String code) {
+    public List<Employee> findByClientCode(String code) throws Exception {
         List<Employee> employees = new ArrayList<>();
-        Client client = new Client("1", "Orange");
-        List<String> technologies = new ArrayList<>();
-        technologies.add("React JS");
-        technologies.add("Spring");
-        Employee employee = new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client);
-        employees.add(employee);
+        try {
+            employees = employeeRepository.findEmployeeByClient_Code(code);
+            if (employees.size() == 0) {
+                throw new NoDataFoundException(EMP_WITH_CODE_NOT_FOUND_ERROR);
+            }
+        } catch (NoDataFoundException e1) {
+            throw new NoDataFoundException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
         return employees;
     }
 
     @Override
-    public void save(Employee e) {
-        employeeRepository.save(e);
+    public void save(Employee e) throws Exception {
+        try {
+            employeeRepository.save(e);
+        } catch (Exception e1) {
+            throw new Exception(e1.getMessage());
+        }
 
     }
 
     @Override
-    public void delete() {
-        employeeRepository.deleteAll();
+    public void delete() throws Exception {
+        try {
+            employeeRepository.deleteAll();
+        } catch (Exception e1) {
+            throw new Exception(e1.getMessage());
+        }
+
     }
 
     @Override
-    public void deleteById(long id) {
-        employeeRepository.deleteById(id);
+    public void deleteById(long id) throws Exception {
+        try {
+            employeeRepository.deleteById(id);
+        } catch (Exception e1) {
+            throw new Exception(e1.getMessage());
+        }
+    }
+
+    @Override
+    public long update(long id, Employee e) throws Exception {
+        Optional<Employee> employee;
+        try {
+            employee = employeeRepository.findById(id);
+            if (!employee.isPresent()) {
+                throw new NoDataFoundException(EMP_WITH_ID_NOT_FOUND_ERROR);
+            }
+            employee.get().setFirstName(e.getFirstName());
+            employee.get().setLastName(e.getLastName());
+            employee.get().setBirthDate(e.getBirthDate());
+            employee.get().setCurrentPosition(e.getCurrentPosition());
+            employee.get().setTechnologies(e.getTechnologies());
+            employee.get().setClient(e.getClient());
+            employeeRepository.save(employee.get());
+
+        } catch (NoDataFoundException ex) {
+            throw new NoDataFoundException(ex.getMessage());
+        } catch (Exception e1) {
+            throw new Exception(e1.getMessage());
+        }
+        return employee.get().getId();
     }
 }

@@ -1,6 +1,5 @@
 package com.rest.domains;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -11,24 +10,33 @@ public class Employee {
     @Id
     @GeneratedValue
     private long id;
-    private CurrentPosition currentPosition;
+    private String currentPosition;
     private String firstName;
     private String lastName;
-    private LocalDate birthDate;
-    @ElementCollection
-    private List<String> technologies;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code")
+    private String birthDate;
+    private String technologies;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EMPLOYEE_CLIENT_CODE")
     private Client client;
 
+    public Employee() {
+    }
 
-    public Employee(CurrentPosition currentPosition, String firstName, String lastName, LocalDate birthDate, List<String> technologies, Client client) {
+    public Employee(String currentPosition, String firstName, String lastName, String birthDate, String technologies, Client client) {
         this.currentPosition = currentPosition;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.technologies = technologies;
         this.client = client;
+    }
+
+    public Employee(String currentPosition, String firstName, String lastName, String birthDate, String technologies) {
+        this.currentPosition = currentPosition;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.technologies = technologies;
     }
 
     public String getFirstName() {
@@ -39,15 +47,15 @@ public class Employee {
         return lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public List<String> getTechnologies() {
+    public String getTechnologies() {
         return technologies;
     }
 
-    public CurrentPosition getCurrentPosition() {
+    public String getCurrentPosition() {
         return currentPosition;
     }
 
@@ -64,15 +72,15 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public void setTechnologies(List<String> technologies) {
+    public void setTechnologies(String technologies) {
         this.technologies = technologies;
     }
 
-    public void setCurrentPosition(CurrentPosition currentPosition) {
+    public void setCurrentPosition(String currentPosition) {
         this.currentPosition = currentPosition;
     }
 

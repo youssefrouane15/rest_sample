@@ -11,8 +11,8 @@ import java.util.List;
 @Qualifier(value = "employeeRepository")
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    public Employee findByFirstName(String firstName);
+     Employee findByFirstName(String firstName);
 
-    public List<Employee> findEmployeeByClient_Code(String code);
+     List<Employee> findEmployeeByClient_Code(String code);
 
 }

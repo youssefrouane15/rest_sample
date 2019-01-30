@@ -1,6 +1,7 @@
 package com.rest.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import javax.servlet.Filter;
 
 public class ApplicationInitializer  extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -17,5 +18,9 @@ public class ApplicationInitializer  extends AbstractAnnotationConfigDispatcherS
     protected String[] getServletMappings() {
         return new String[] { "/*" };
     }
-
+    @Override
+    protected Filter[] getServletFilters() {
+        Filter [] singleton = { new CORSFilter()};
+        return singleton;
+    }
 }

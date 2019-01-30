@@ -10,8 +10,7 @@ public class Adress {
     private String libelleCourt;
     private String libelleLong;
     private String codePostal;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adress")
+    @OneToOne(mappedBy = "adress", fetch = FetchType.LAZY)
     private Client client;
 
     public Adress() {

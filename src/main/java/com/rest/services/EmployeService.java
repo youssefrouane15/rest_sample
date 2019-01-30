@@ -6,18 +6,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmployeService {
-    public List<Employee> findAll();
+    List<Employee> findAll() throws Exception;
 
-    public Optional<Employee> findById(long id);
+    Optional<Employee> findById(long id) throws Exception;
 
-    public Employee findByName(String name);
+    Employee findByName(String name) throws Exception;
 
-    public List<Employee> findByClientCode(String code);
+    List<Employee> findByClientCode(String code) throws Exception;
 
-    public void save(Employee e);
+    void save(Employee e) throws Exception;
 
-    public void delete();
+    void delete() throws Exception;
 
-    public void deleteById(long id);
+    void deleteById(long id) throws Exception;
+
+    long update(long id, Employee e) throws Exception;
 
 }
