@@ -1,5 +1,6 @@
 package com.rest.dao;
 
+import com.rest.domains.Client;
 import com.rest.domains.Employee;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.repository.CrudRepository;

@@ -109,10 +109,10 @@ public class EmployeeServiceImpl implements EmployeService {
     }
 
     @Override
-    public long update(long id, Employee e) throws Exception {
+    public long update(long employeeId, Employee e) throws Exception {
         Optional<Employee> employee;
         try {
-            employee = employeeRepository.findById(id);
+            employee = employeeRepository.findById(employeeId);
             if (!employee.isPresent()) {
                 throw new NoDataFoundException(EMP_WITH_ID_NOT_FOUND_ERROR);
             }
@@ -129,6 +129,6 @@ public class EmployeeServiceImpl implements EmployeService {
         } catch (Exception e1) {
             throw new Exception(e1.getMessage());
         }
-        return employee.get().getId();
+        return employee.get().getEmployeeId();
     }
 }

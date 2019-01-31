@@ -34,14 +34,14 @@ ClientServiceImpl clientServiceImpl =new ClientServiceImpl(clientRepository);
     List<Employee> employees2 = new ArrayList<>();
     List<String> technologies = new ArrayList<>();
     technologies.add("JAVA EE");
-    employees.add(new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client1));
-    employees.add(new Employee(CurrentPosition.Architect, "Sondes", "Hamza", LocalDate.of(1993, 10, 11), technologies, client1));
-    client1.setEmployees(employees);
+//    employees.add(new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client1));
+//    employees.add(new Employee(CurrentPosition.Architect, "Sondes", "Hamza", LocalDate.of(1993, 10, 11), technologies, client1));
+//    client1.setEmployees(employees);
     Adress adress  = new Adress("Avenue Boetie","Rue 124","75008",client1);
     client1.setAdress(adress);
-    employees.add(new Employee(CurrentPosition.Developper, "Salima", "TUNIA", LocalDate.of(1990, 8, 11), technologies, client2));
-    employees.add(new Employee(CurrentPosition.Architect, "AYA", "Hamza", LocalDate.of(1991, 10, 11), technologies, client2));
-   client1.setEmployees(employees2);
+//    employees.add(new Employee(CurrentPosition.Developper, "Salima", "TUNIA", LocalDate.of(1990, 8, 11), technologies, client2));
+//    employees.add(new Employee(CurrentPosition.Architect, "AYA", "Hamza", LocalDate.of(1991, 10, 11), technologies, client2));
+//   client1.setEmployees(employees2);
     clients.add(client1);
     clients.add(client2);
 
@@ -59,13 +59,13 @@ public void testFindByCode(){
     List<String> technologies = new ArrayList<>();
     technologies.add("JAVA EE");
 
-    employees.add(new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client1));
-    employees.add(new Employee(CurrentPosition.Architect, "Sondes", "Hamza", LocalDate.of(1993, 10, 11), technologies, client1));
-    client1.setEmployees(employees);
+//    employees.add(new Employee(CurrentPosition.Developper, "Youssef", "Rouane", LocalDate.of(1994, 8, 11), technologies, client1));
+//    employees.add(new Employee(CurrentPosition.Architect, "Sondes", "Hamza", LocalDate.of(1993, 10, 11), technologies, client1));
+//    client1.setEmployees(employees);
     Adress adress  = new Adress("Avenue Boetie","Rue 124","75008",client1);
     client1.setAdress(adress);
-    employees.add(new Employee(CurrentPosition.Developper, "Salima", "TUNIA", LocalDate.of(1990, 8, 11), technologies, client2));
-    employees.add(new Employee(CurrentPosition.Architect, "AYA", "Hamza", LocalDate.of(1991, 10, 11), technologies, client2));
+//    employees.add(new Employee(CurrentPosition.Developper, "Salima", "TUNIA", LocalDate.of(1990, 8, 11), technologies, client2));
+//    employees.add(new Employee(CurrentPosition.Architect, "AYA", "Hamza", LocalDate.of(1991, 10, 11), technologies, client2));
     clients.add(client1);
     clients.add(client2);
 

@@ -1,15 +1,17 @@
 package com.rest.domains;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import java.util.List;
 
 
 import javax.persistence.*;
 
 @Entity
-public class Employee {
+public class Employee extends ResourceSupport {
     @Id
     @GeneratedValue
-    private long id;
+    private long employeeId;
     private String currentPosition;
     private String firstName;
     private String lastName;
@@ -60,8 +62,8 @@ public class Employee {
     }
 
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public void setFirstName(String firstName) {
@@ -85,8 +87,8 @@ public class Employee {
     }
 
 
-    public long getId() {
-        return id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
     public Client getClient() {
