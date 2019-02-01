@@ -27,28 +27,28 @@ public class Adress {
         return id;
     }
 
-    public String getLibelleCourt() {
-        return libelleCourt;
-    }
-
-    public String getLibelleLong() {
-        return libelleLong;
-    }
-
-    public String getCodePostal() {
-        return codePostal;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getLibelleCourt() {
+        return libelleCourt;
     }
 
     public void setLibelleCourt(String libelleCourt) {
         this.libelleCourt = libelleCourt;
     }
 
+    public String getLibelleLong() {
+        return libelleLong;
+    }
+
     public void setLibelleLong(String libelleLong) {
         this.libelleLong = libelleLong;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
     }
 
     public void setCodePostal(String codePostal) {

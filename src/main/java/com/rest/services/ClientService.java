@@ -6,17 +6,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClientService {
-    public List<Client> findAll();
+    List<Client> findAll();
 
-    public Optional<Client> findById(long id);
+    Optional<Client> findById(long id);
 
-    public Client findByCode(String code);
+    Client findByCode(String code);
 
-    public void save(Client c);
+    void save(Client c);
 
-    public void delete();
+    void delete();
 
-    public void deleteById(long id);
+    void deleteById(long id);
 
-    public List<Client> findByAdress(String libelleCourt);
+    List<Client> findByAdress(String libelleCourt);
+
+    void updateClient(Client client);
 }
