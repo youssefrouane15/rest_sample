@@ -1,6 +1,4 @@
 import com.rest.dao.EmployeeRepository;
-import com.rest.domains.Client;
-import com.rest.domains.CurrentPosition;
 import com.rest.domains.Employee;
 import com.rest.services.EmployeeServiceImpl;
 import org.junit.Test;
@@ -10,14 +8,15 @@ import org.mockito.Mock;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-
+/**
+ * @author Youssef
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeServiceImplTest {
 
@@ -31,7 +30,7 @@ public class EmployeeServiceImplTest {
     public void testFindAllEmployees() throws Exception {
         List<Employee> employees = new ArrayList<>();
         when(employeeRepository.findAll()).thenReturn(employees);
-        assertEquals( employees.size(), employeeServiceImpl.findAll().size());
+        assertEquals(employees.size(), employeeServiceImpl.findAll().size());
     }
 
     @Test

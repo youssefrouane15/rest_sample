@@ -1,7 +1,9 @@
 package com.rest.domains;
 
 import javax.persistence.*;
-
+/**
+ * @author Youssef
+ */
 @Entity
 public class Adress {
     @Id

@@ -1,6 +1,7 @@
 package com.rest.services;
 
 import com.rest.dao.EmployeeRepository;
+import com.rest.domains.Client;
 import com.rest.domains.Employee;
 import com.rest.exceptions.NoDataFoundException;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Youssef
+ */
 @Service("emloyeeService")
 public class EmployeeServiceImpl implements EmployeService {
     private EmployeeRepository employeeRepository;
-    private final String EMP_WITH_ID_NOT_FOUND_ERROR="No Employee found with the given Id";
-    private final String EMP_WITH_NAME_NOT_FOUND_ERROR="No Employee found with the given name";
-    private final String EMP_WITH_CODE_NOT_FOUND_ERROR="No Employees found with the given client code";
+    private final String EMP_WITH_ID_NOT_FOUND_ERROR = "No Employee found with the given Id";
+    private final String EMP_WITH_NAME_NOT_FOUND_ERROR = "No Employee found with the given name";
+    private final String EMP_WITH_CODE_NOT_FOUND_ERROR = "No Employees found with the given client code";
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -80,13 +84,14 @@ public class EmployeeServiceImpl implements EmployeService {
     }
 
     @Override
-    public void save(Employee e) throws Exception {
+    public Employee save(Employee e) throws Exception {
+        Employee employee = null;
         try {
-            employeeRepository.save(e);
+            employee = employeeRepository.save(e);
         } catch (Exception e1) {
             throw new Exception(e1.getMessage());
         }
-
+        return employee;
     }
 
     @Override
@@ -130,5 +135,25 @@ public class EmployeeServiceImpl implements EmployeService {
             throw new Exception(e1.getMessage());
         }
         return employee.get().getEmployeeId();
+    }
+
+    @Override
+    public Client getClientForEmployee(long employeeId) throws Exception {
+        Optional<Employee> employee;
+        Client client = null;
+        try {
+            employee = employeeRepository.findById(employeeId);
+            if (!employee.isPresent()) {
+                throw new NoDataFoundException(EMP_WITH_ID_NOT_FOUND_ERROR);
+            }
+            if (employee.get().getClient() != null) {
+                client = employee.get().getClient();
+            }
+        } catch (NoDataFoundException ex) {
+            throw new NoDataFoundException(ex.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        return client;
     }
 }

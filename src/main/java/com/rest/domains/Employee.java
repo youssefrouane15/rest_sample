@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+/**
+ * @author Youssef
+ */
 @Entity
 public class Employee extends ResourceSupport {
     @Id

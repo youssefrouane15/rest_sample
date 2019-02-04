@@ -2,6 +2,9 @@ package com.rest.domains;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * @author Youssef
+ */
 public class ErrorMessage {
     private HttpStatus errorCode;
     private String message;

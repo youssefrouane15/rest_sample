@@ -8,8 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+/**
+ * @author Youssef
+ */
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -18,27 +22,30 @@ public class UserInfo implements Serializable {
     @Column(name = "id", length = 25)
     private Integer id;
 
-    @Column(name="username",length=50,nullable=false)
+    @Column(name = "username", length = 50, nullable = false)
     private String userName;
 
-    @Column(name="password",length=800,nullable=false)
+    @Column(name = "password", length = 800, nullable = false)
     private String password;
 
-    @Column(name="role",length=50)
+    @Column(name = "role", length = 50)
     private String role;
 
-    @Column(name="enabled")
+    @Column(name = "enabled")
     private short enabled;
 
     public String getUserName() {
         return userName;
     }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -51,21 +58,24 @@ public class UserInfo implements Serializable {
     }
 
     /**
-     * @param id
-     *            the id to set
+     * @param id the id to set
      */
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getRole() {
         return role;
     }
+
     public void setRole(String role) {
         this.role = role;
     }
+
     public short getEnabled() {
         return enabled;
     }
+
     public void setEnabled(short enabled) {
         this.enabled = enabled;
     }

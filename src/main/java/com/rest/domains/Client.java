@@ -4,6 +4,9 @@ package com.rest.domains;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * @author Youssef
+ */
 @Entity
 public class Client {
 

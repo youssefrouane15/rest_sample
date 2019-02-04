@@ -2,7 +2,7 @@ package com.rest.controllers;
 
 import com.rest.domains.Adress;
 import com.rest.domains.Client;
-import com.rest.exception.ClientException;
+import com.rest.exceptions.ClientException;
 import com.rest.services.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

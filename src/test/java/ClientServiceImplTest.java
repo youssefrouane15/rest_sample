@@ -1,7 +1,5 @@
 import com.rest.dao.ClientRepository;
-import com.rest.domains.Adress;
 import com.rest.domains.Client;
-import com.rest.domains.CurrentPosition;
 import com.rest.domains.Employee;
 import com.rest.services.ClientServiceImpl;
 import org.junit.Test;
@@ -10,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

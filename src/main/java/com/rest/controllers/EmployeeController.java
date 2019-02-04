@@ -1,12 +1,13 @@
 package com.rest.controllers;
 
 
+import com.rest.domains.Client;
 import com.rest.domains.Employee;
 import com.rest.services.EmployeeServiceImpl;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+/**
+ * @author Youssef
+ */
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -36,6 +41,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    /**
+     * @param code
+     * @param name
+     * @return
+     * @throws Exception
+     */
     @GetMapping
     public Resources<Employee> findAll(@RequestParam(required = false) String code, @RequestParam(required = false) String name) throws Exception {
         List<Employee> employees = new ArrayList<>();
@@ -51,10 +62,10 @@ public class EmployeeController {
             Long employeeId = employee.getEmployeeId();
             Link selfLink = linkTo(EmployeeController.class).slash(employeeId).withSelfRel();
             employee.add(selfLink);
-/*            if(employee.getClient() != null ) {
-                Long clientId = employee.getClient().getId();
-
-            }*/
+            if (employee.getClient() != null) {
+                final Link clientLink = linkTo(methodOn(EmployeeController.class).getClientForEmployee(employeeId)).withRel("client");
+                employee.add(clientLink);
+            }
 
         }
         Link link = linkTo(EmployeeController.class).withSelfRel();
@@ -62,6 +73,11 @@ public class EmployeeController {
         return result;
     }
 
+    /**
+     * @param employeeId
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "/{employeeId}")
     public ResponseEntity<Object> findById(@PathVariable Long employeeId) throws Exception {
         Optional<Employee> e = null;
@@ -69,19 +85,56 @@ public class EmployeeController {
         return ResponseEntity.ok().body(e.get());
     }
 
+    /**
+     * @param employeeId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "/{employeeId}/client", produces = {"application/hal+json"})
+    public Resources<Client> getClientForEmployee(@PathVariable final Long employeeId) throws Exception {
+        final List<Client> clients = new ArrayList<>();
+        Client client = employeeService.getClientForEmployee(employeeId);
+        if (client != null) {
+            clients.add(client);
+        }
+        Link link = linkTo(EmployeeController.class).slash(employeeId).withSelfRel();
+        Resources<Client> result = new Resources<>(clients, link);
+        return result;
+    }
+
+    /**
+     * @param e
+     * @return
+     * @throws Exception
+     */
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> save(@RequestBody Employee e) throws Exception {
-        employeeService.save(e);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public Resource save(@RequestBody Employee e) throws Exception {
+        Employee employee = employeeService.save(e);
+        final Link employeeLink = linkTo(methodOn(EmployeeController.class).findById(employee.getEmployeeId())).withRel("employee");
+        Resource<Employee> result = new Resource(employeeLink);
+        return result;
 
     }
 
+    /**
+     * @param employeeId
+     * @param e
+     * @return
+     * @throws Exception
+     */
     @PutMapping(path = "/{employeeId}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> update(@PathVariable Long employeeId, @RequestBody Employee e) throws Exception {
+    public Resource<Object> update(@PathVariable Long employeeId, @RequestBody Employee e) throws Exception {
         Long updatedEmployeeId = employeeService.update(employeeId, e);
-        return ResponseEntity.ok().body(updatedEmployeeId);
+        final Link employeeLink = linkTo(methodOn(EmployeeController.class).findById(updatedEmployeeId)).withRel("employee");
+        Resource<Object> result = new Resource(updatedEmployeeId, employeeLink);
+        return result;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable("id") Long id) throws Exception {
         Optional<Employee> employee;
@@ -89,6 +142,10 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping
     public ResponseEntity<Object> deleteAll() throws Exception {
         employeeService.delete();

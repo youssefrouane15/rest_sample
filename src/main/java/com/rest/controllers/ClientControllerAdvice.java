@@ -1,6 +1,6 @@
 package com.rest.controllers;
 
-import com.rest.exception.ClientException;
+import com.rest.exceptions.ClientException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
