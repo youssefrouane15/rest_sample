@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface ClientService {
     public List<Client> findAll();
 
-    public Optional<Client> findById(long id);
+    Optional<Client> findById(long id);
 
-    public Client findByCode(String code);
+    Optional<Client> findByCode(String code);
 
     public void save(Client c);
 
