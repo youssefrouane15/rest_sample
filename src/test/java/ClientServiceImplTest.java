@@ -69,8 +69,8 @@ public void testFindByCode(){
     clients.add(client1);
     clients.add(client2);
 
-    when(clientRepository.findClientByCode("1")).thenReturn(client1);
-    assertEquals("Societe generale", clientServiceImpl.findByCode("1").getName());
+    when(clientRepository.findClientByCode("1").get()).thenReturn(client1);
+    assertEquals("Societe generale", clientServiceImpl.findByCode("1").get().getName());
 }
 
 }
