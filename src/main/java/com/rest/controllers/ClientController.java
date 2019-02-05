@@ -64,7 +64,7 @@ public class ClientController {
     }
 
     /**
-     * @param clientid
+     * @param id
      * @return client object; this method will get the client by id and il will genere
      * @throws ClientException when client not found
      */
