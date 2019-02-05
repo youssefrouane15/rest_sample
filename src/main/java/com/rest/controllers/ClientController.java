@@ -28,7 +28,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ClientController {
-    private Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    private Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ClientController.class);
     private ClientServiceImpl clientServiceImp;
 
     /**
