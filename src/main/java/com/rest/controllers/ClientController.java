@@ -3,7 +3,6 @@ package com.rest.controllers;
 import ch.qos.logback.classic.Logger;
 import com.rest.domains.Adress;
 import com.rest.domains.Client;
-import com.rest.domains.Employee;
 import com.rest.exceptions.ClientException;
 import com.rest.services.ClientServiceImpl;
 import com.rest.services.EmployeeServiceImpl;
@@ -30,19 +29,13 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ClientController {
     private Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-
-    @Autowired
     private ClientServiceImpl clientServiceImp;
-    @Autowired
-    private EmployeeServiceImpl employeeService;
 
     /**
      * @param clientServiceImp Injection by constructor for the clientServiceImp
      */
     public ClientController(ClientServiceImpl clientServiceImp, EmployeeServiceImpl employeeService) {
         this.clientServiceImp = clientServiceImp;
-        this.employeeService = employeeService;
-
     }
 
     /**
@@ -57,14 +50,12 @@ public class ClientController {
             clt.add(linkTo(methodOn(ClientController.class).getAdressClient(clt.getClientId())).withRel("adress").withType("GET"));
         }
         Link link = linkTo(ClientController.class).withSelfRel();
-        Resources<Client> ressources = new Resources<>(clients, link);
-        //Resources<Client>  ressources = new Resources<>(clients);
-        return ressources;
+        return new Resources<>(clients, link);
     }
 
 
     private Resource<Client> getClientResource(Client client) {
-        Resource<Client> resource = new Resource<Client>(client);
+        Resource<Client> resource = new Resource<>(client);
         // Link to client
         resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withSelfRel());
         // Link to adress
@@ -73,14 +64,14 @@ public class ClientController {
     }
 
     /**
-     * @param id
+     * @param clientid
      * @return client object; this method will get the client by id and il will genere
      * @throws ClientException when client not found
      */
     @GetMapping("/v1/clients/id/{id}")
     public Resource<Client> getClientById(@PathVariable(name = "id") long id) throws ClientException {
         Client client = clientServiceImp.findById(id).orElseThrow(() -> new ClientException(id));
-        Resource<Client> resource = new Resource<Client>(client);
+        Resource<Client> resource = new Resource<>(client);
         resource.add(linkTo(methodOn(ClientController.class).getClientById(id)).withSelfRel());
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(id)).withRel("adress").withType("GET"));
         logger.info("Find Client By Id" + id);
@@ -96,7 +87,7 @@ public class ClientController {
     @GetMapping("/v1/clients/code/{code}")
     public Resource<Client> getClientByCode(@PathVariable(name = "code") String code) throws ClientException {
         Client client = clientServiceImp.findByCode(code).orElseThrow(() -> new ClientException(code));
-        Resource<Client> resource = new Resource<Client>(client);
+        Resource<Client> resource = new Resource<>(client);
         resource.add(linkTo(methodOn(ClientController.class).getClientByCode(client.getCode())).withSelfRel().withType("GET"));
         resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("id").withType("GET"));
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(client.getClientId())).withRel("adress").withType("GET"));
@@ -104,19 +95,6 @@ public class ClientController {
         logger.info("Get Client by Code" + code);
         return resource;
     }
-
-    @GetMapping("/v1/clients/code/{code}/employees")
-    public Resources<Employee> getEmployeesByClient(@PathVariable(name = "code") String code) throws Exception {
-        Client client = clientServiceImp.findByCode(code).orElseThrow(() -> new ClientException(code));
-        List<Employee> employees= employeeService.findByClientCode(client.getCode());
-        logger.info("Get list employees by code client" + code);
-
-        Resources<Employee> resources = new Resources<Employee>(employees);
-      //  resources.add(linkTo(methodOn(ClientController.class).getClientById(id)).withSelfRel());
-        // resources.add(linkTo(methodOn(ClientController.class).getAdressClient(id)).withRel("adress"));
-        return resources;
-    }
-
 
     /**
      * @param id
@@ -126,7 +104,7 @@ public class ClientController {
     @GetMapping("/v1/clients/{id}/adress")
     public Resource<Adress> getAdressClient(@PathVariable(name = "id") long id) throws ClientException {
         Client client = clientServiceImp.findById(id).orElseThrow(() -> new ClientException(id, new Exception()));
-        Resource<Adress> resource = new Resource<Adress>(client.getAdress());
+        Resource<Adress> resource = new Resource<>(client.getAdress());
         resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("client").withType("GET"));
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(client.getClientId())).withSelfRel().withType("GET").withTitle("adress"));
 
@@ -152,7 +130,6 @@ public class ClientController {
         logger.info("Delete  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.OK.value()).build();
     }
-
     /**
      * @param client, id
      *                update client with id id exist else throw exception
@@ -162,13 +139,11 @@ public class ClientController {
     public ResponseEntity<Object> updateClient(@RequestBody Client client,
                                                @PathVariable(name = "id") long id) throws ClientException {
         Client clnt = clientServiceImp.findById(id).orElseThrow(() -> new ClientException(id));
-        if (clnt != null) {
-            clnt.setCode(client.getCode());
-            clnt.setName(client.getName());
-            clnt.setAdress(client.getAdress());
-            clientServiceImp.save(clnt);
-            logger.info("Update  Client By Id" + id);
-        }
+        clnt.setCode(client.getCode());
+        clnt.setName(client.getName());
+        clnt.setAdress(client.getAdress());
+        clientServiceImp.updateClient(clnt);
+        logger.info("Update  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
