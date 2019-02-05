@@ -1,12 +1,14 @@
 package com.rest.domains;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.persistence.*;
 
 @Entity
-public class Adress {
+public class Adress extends ResourceSupport {
     @Id
     @GeneratedValue
-    private long id;
+    private long adressId;
     private String libelleCourt;
     private String libelleLong;
     private String codePostal;
@@ -23,8 +25,8 @@ public class Adress {
         this.client = client;
     }
 
-    public long getId() {
-        return id;
+    public long getAdressId() {
+        return adressId;
     }
 
     public String getLibelleCourt() {
@@ -39,9 +41,7 @@ public class Adress {
         return codePostal;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public void setAdressId(long adressId) { this.adressId = adressId; }
 
     public void setLibelleCourt(String libelleCourt) {
         this.libelleCourt = libelleCourt;

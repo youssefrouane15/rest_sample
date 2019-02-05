@@ -33,19 +33,7 @@ public class AdressServiceImpl implements AdressService {
     }
     @Override
     public Adress findById(long id) {
-        List<Adress> adresses = findAll();
-        Adress adress =null;
-        for(Adress ad: adresses)
-        {
-          if  (ad.getId()== id){
-              adress=ad;
-
-          }
-        }
-
-        return adress;
-
-       // return adressRepository.findById(id);
+        return adressRepository.findById(id).get();
     }
 
     @Override
