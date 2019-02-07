@@ -9,8 +9,7 @@ import javax.servlet.Filter;
 public class ApplicationInitializer  extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        logger.setLevel(Level.DEBUG);
+
         return new Class[] { ApplicationConfiguration.class };
     }
 

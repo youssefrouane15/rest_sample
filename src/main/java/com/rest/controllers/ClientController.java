@@ -1,5 +1,6 @@
 package com.rest.controllers;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.rest.domains.Adress;
 import com.rest.domains.Client;
@@ -7,15 +8,13 @@ import com.rest.exceptions.ClientException;
 import com.rest.services.ClientServiceImpl;
 import com.rest.services.EmployeeServiceImpl;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -28,7 +27,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ClientController {
-    private Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ClientController.class);
+    private final Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(this.getClass());
     private ClientServiceImpl clientServiceImp;
 
     /**
@@ -42,22 +41,21 @@ public class ClientController {
      * @return List of clients
      */
     @GetMapping("/v1/clients")
-    public Resources<Client> getAllClients() {
-        logger.info("Find All Clients");
+    public List<Resource<Client>> getAllClients() {
+        logger.debug("Find All Clients");
         List<Client> clients = clientServiceImp.findAll();
+        List<Resource<Client>> resources = new ArrayList<>();
         for (Client clt : clients) {
-            clt.add(linkTo(methodOn(ClientController.class).getClientById(clt.getClientId())).withSelfRel().withType("GET"));
-            clt.add(linkTo(methodOn(ClientController.class).getAdressClient(clt.getClientId())).withRel("adress").withType("GET"));
+            resources.add(getClientResource(clt));
         }
-        Link link = linkTo(ClientController.class).withSelfRel();
-        return new Resources<>(clients, link);
+        return resources;
     }
 
 
     private Resource<Client> getClientResource(Client client) {
         Resource<Client> resource = new Resource<>(client);
         // Link to client
-        resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withSelfRel());
+        resource.add(linkTo(getClientById(client.getClientId())).withSelfRel());
         // Link to adress
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(client.getClientId())).withRel("adress").withType("GET"));
         return resource;
@@ -74,7 +72,7 @@ public class ClientController {
         Resource<Client> resource = new Resource<>(client);
         resource.add(linkTo(methodOn(ClientController.class).getClientById(id)).withSelfRel());
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(id)).withRel("adress").withType("GET"));
-        logger.info("Find Client By Id" + id);
+        logger.debug("Find Client By Id" + id);
         return resource;
     }
 
@@ -92,7 +90,7 @@ public class ClientController {
         resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("id").withType("GET"));
         resource.add(linkTo(methodOn(ClientController.class).getAdressClient(client.getClientId())).withRel("adress").withType("GET"));
 
-        logger.info("Get Client by Code" + code);
+        logger.debug("Get Client by Code" + code);
         return resource;
     }
 
@@ -117,7 +115,7 @@ public class ClientController {
     @PostMapping("/v1/clients")
     public ResponseEntity<Object> saveClient(@RequestBody Client client) {
         clientServiceImp.save(client);
-        logger.info("Save a new Client");
+        logger.debug("Save a new Client");
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
@@ -127,9 +125,10 @@ public class ClientController {
     @DeleteMapping("/v1/clients/{id}")
     public ResponseEntity<Object> deleteClient(@PathVariable(name = "id") long id) {
         clientServiceImp.deleteById(id);
-        logger.info("Delete  Client By Id" + id);
+        logger.debug("Delete  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.OK.value()).build();
     }
+
     /**
      * @param client, id
      *                update client with id id exist else throw exception
@@ -143,9 +142,82 @@ public class ClientController {
         clnt.setName(client.getName());
         clnt.setAdress(client.getAdress());
         clientServiceImp.updateClient(clnt);
-        logger.info("Update  Client By Id" + id);
+        //logger.debug("Update  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
+    @PostMapping("/loglevel/{loglevel}")
+    public String dynamicLogLevel(
+            @PathVariable(name = "loglevel") String logLevel, @RequestParam(value = "package") String packageName) throws Exception {
+        logger.info("Log level: " + logLevel);
+        logger.info("Package name: " + packageName);
+        String retVal = !packageName.isEmpty() ? setLogLevel(logLevel, packageName) : setLogLevel(logLevel);
+        return retVal;
+        //  return retVal.equals("ok")?ResponseEntity.status(HttpStatus.CREATED.value()).build():ResponseEntity.throw new Exception(retVal);
 
+    }
+
+    @PostMapping("/level/{level}")
+    public ResponseEntity<Object> rootLogLevel(
+            @PathVariable(name = "level") String logLevel) throws Exception {
+        String retVal = setLogLevel(logLevel);
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(retVal);
+    }
+
+
+    private String setLogLevel(String logLevel, String packageName) {
+        String retVal = "Level Logging Changed to :";
+        Logger logger = (Logger) LoggerFactory.getLogger(packageName);
+
+        if (logLevel.equalsIgnoreCase("DEBUG")) {
+            logger.setLevel(Level.DEBUG);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("INFO")) {
+            logger.setLevel(Level.INFO);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("TRACE")) {
+            logger.setLevel(Level.TRACE);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("WARN")) {
+            logger.setLevel(Level.WARN);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("ERROR")) {
+            logger.setLevel(Level.ERROR);
+            retVal += logLevel;
+        } else {
+            logger.error("Not a known loglevel: " + logLevel);
+            retVal = "Error, not a known loglevel: " + logLevel;
+        }
+        return retVal;
+    }
+
+    private String setLogLevel(String logLevel) {
+        String retVal = "Level Logging Changed to :";
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        if (logLevel.equalsIgnoreCase("DEBUG")) {
+            root.setLevel(Level.DEBUG);
+            logger.setLevel(Level.DEBUG);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("INFO")) {
+            root.setLevel(Level.INFO);
+            logger.setLevel(Level.INFO);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("TRACE")) {
+            root.setLevel(Level.TRACE);
+            logger.setLevel(Level.TRACE);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("WARN")) {
+            root.setLevel(Level.WARN);
+            logger.setLevel(Level.WARN);
+            retVal += logLevel;
+        } else if (logLevel.equalsIgnoreCase("ERROR")) {
+            logger.setLevel(Level.ERROR);
+            root.setLevel(Level.ERROR);
+            retVal += logLevel;
+        } else {
+            logger.error("Not a known loglevel: " + logLevel);
+            retVal = "Error, not a known loglevel: " + logLevel;
+        }
+        return retVal;
+    }
 }
