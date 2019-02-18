@@ -2,8 +2,10 @@ package com.rest.controllers;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import com.rest.domains.Adress;
 import com.rest.domains.Client;
+import com.rest.domains.Logging;
 import com.rest.exceptions.ClientException;
 import com.rest.services.ClientServiceImpl;
 import com.rest.services.EmployeeServiceImpl;
@@ -15,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -27,7 +32,15 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ClientController {
-    private final Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME);
+    static Map<String, Logging> loggingMap = new HashMap<>();
+    static {
+        loggingMap.put("DEBUG", new Logging(Level.DEBUG));
+        loggingMap.put("TRACE", new Logging(Level.TRACE));
+        loggingMap.put("INFO", new Logging(Level.INFO));
+        loggingMap.put("WARN", new Logging(Level.WARN));
+        loggingMap.put("ERROR", new Logging(Level.ERROR));
+    }
     private ClientServiceImpl clientServiceImp;
 
     /**
@@ -146,78 +159,12 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
-    @PostMapping("/loglevel/{loglevel}")
-    public String dynamicLogLevel(
-            @PathVariable(name = "loglevel") String logLevel, @RequestParam(value = "package") String packageName) throws Exception {
-        logger.info("Log level: " + logLevel);
-        logger.info("Package name: " + packageName);
-        String retVal = !packageName.isEmpty() ? setLogLevel(logLevel, packageName) : setLogLevel(logLevel);
-        return retVal;
-        //  return retVal.equals("ok")?ResponseEntity.status(HttpStatus.CREATED.value()).build():ResponseEntity.throw new Exception(retVal);
-
-    }
-
     @PostMapping("/level/{level}")
-    public ResponseEntity<Object> rootLogLevel(
-            @PathVariable(name = "level") String logLevel) throws Exception {
-        String retVal = setLogLevel(logLevel);
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(retVal);
-    }
-
-
-    private String setLogLevel(String logLevel, String packageName) {
-        String retVal = "Level Logging Changed to :";
-        Logger logger = (Logger) LoggerFactory.getLogger(packageName);
-
-        if (logLevel.equalsIgnoreCase("DEBUG")) {
-            logger.setLevel(Level.DEBUG);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("INFO")) {
-            logger.setLevel(Level.INFO);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("TRACE")) {
-            logger.setLevel(Level.TRACE);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("WARN")) {
-            logger.setLevel(Level.WARN);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("ERROR")) {
-            logger.setLevel(Level.ERROR);
-            retVal += logLevel;
-        } else {
-            logger.error("Not a known loglevel: " + logLevel);
-            retVal = "Error, not a known loglevel: " + logLevel;
-        }
-        return retVal;
-    }
-
-    private String setLogLevel(String logLevel) {
-        String retVal = "Level Logging Changed to :";
+    public Logging rootLogLevel(
+            @PathVariable("level") String logLevel) throws Exception {
         Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        if (logLevel.equalsIgnoreCase("DEBUG")) {
-            root.setLevel(Level.DEBUG);
-            logger.setLevel(Level.DEBUG);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("INFO")) {
-            root.setLevel(Level.INFO);
-            logger.setLevel(Level.INFO);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("TRACE")) {
-            root.setLevel(Level.TRACE);
-            logger.setLevel(Level.TRACE);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("WARN")) {
-            root.setLevel(Level.WARN);
-            logger.setLevel(Level.WARN);
-            retVal += logLevel;
-        } else if (logLevel.equalsIgnoreCase("ERROR")) {
-            logger.setLevel(Level.ERROR);
-            root.setLevel(Level.ERROR);
-            retVal += logLevel;
-        } else {
-            logger.error("Not a known loglevel: " + logLevel);
-            retVal = "Error, not a known loglevel: " + logLevel;
-        }
-        return retVal;
+        return loggingMap.get(logLevel.toLowerCase());
     }
+
+
 }

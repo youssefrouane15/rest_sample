@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.library}</version>
+            <version>2.9.5</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -115,14 +115,15 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
-        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
             <version>1.1.7</version>
         </dependency>
         <!-- ch.qos.logback.contrib.jackson.JacksonJsonFormatter -->
@@ -154,7 +155,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                     <path>/agh</path>
                     <update>true</update>
-                    <port>9966</port>
+                    <port>9977</port>
                 </configuration>
             </plugin>
         </plugins>
