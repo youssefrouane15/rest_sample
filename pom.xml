@@ -155,7 +155,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                     <path>/agh</path>
                     <update>true</update>
-                    <port>9977</port>
+                    <port>9966</port>
                 </configuration>
             </plugin>
         </plugins>
