@@ -34,6 +34,7 @@ import { EmployeeDetailsComponent } from './components/employee/employee-details
 import { EmployeeUpdateComponent } from './components/employee/employee-update/employee-update.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 const modules = [
   MatButtonModule,
@@ -55,9 +56,6 @@ exports: [...modules],
 })export class MaterialModule {};
 
 @NgModule({
-  entryComponents: [
-    DialogModal
-  ],
   declarations: [
     AppComponent,
     EmployeeComponent,
@@ -65,10 +63,11 @@ exports: [...modules],
     EmployeeUpdateComponent,
     HeaderComponent,
     FooterComponent,
-    DialogModal,
+    DialogComponent,
     HomePageComponent,
     NotFoundComponent,
   ],
+  entryComponents: [DialogComponent],
   imports: [
     BrowserModule,
     MaterialModule,

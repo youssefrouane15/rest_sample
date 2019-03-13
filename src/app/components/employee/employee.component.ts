@@ -6,19 +6,19 @@ import {ClientModel} from '../../client-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import {FormControl, NgForm, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material';
+import {DialogComponent} from '../dialog/dialog.component'
 import {formatDate} from '@angular/common';
 import * as moment from 'moment'
 
-
+/*
 @Component({
 })
 export class DialogOverview {
 
 constructor() {}
 
-
-}
-
+*/
+/*
 @Component({
   selector: 'dialog-modal',
   templateUrl: 'dialog-modal.html',
@@ -43,7 +43,7 @@ export class DialogModal {
       this.dialogRef.close();      
     })
   }
-}
+}*/
 
 
 @Component({
@@ -122,7 +122,7 @@ handleUpdate = (employeeId: string) => {
 }
 openDialog(id: string): void {
   this.EmployeeService.employeeId = id;
-  const dialogRef = this.dialog.open(DialogModal, {
+  const dialogRef = this.dialog.open(DialogComponent, {
     width: '250px'
   });
     dialogRef.afterClosed().subscribe(result => {
