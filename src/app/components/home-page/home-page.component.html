@@ -1,0 +1,20 @@
+<h1>
+  Welcome to Employee App !
+</h1>
+<ul>
+  <li class="col-md-6 offset-5">
+      <nav class="col-md-4 offset-md-left-8">
+          <a routerLink="/employees" routerLinkActive="active">
+            <button mat-button (click)="EmployeeService.disableForm()">Consult Employees</button>
+          </a>
+      </nav>
+  </li>
+  <li class="col-md-6 offset-5">
+      <nav class="col-md-4 offset-md-left-8">
+          <a routerLink="/employees" routerLinkActive="active">
+            <button mat-button (click)="EmployeeService.enableForm()">Add Employee</button>
+          </a>
+      </nav>
+  </li>
+</ul>
+   

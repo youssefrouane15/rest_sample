@@ -1,0 +1,65 @@
+<div class="container" >
+  <div class="jumbotron">        
+  <legend class="text-info">Employee Details</legend>
+  <br/>
+  <div class="row" >    
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label"> Full Name </label>
+    </div>
+    <div class="col-md-2">
+      <p>{{employeeResult.firstName}} {{employeeResult.lastName}}</p>
+    </div>
+  </div>
+  <div class="row" >    
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label"> Birth Date</label>
+    </div>
+    <div class="col-md-2">
+      <p>{{employeeResult.birthDate}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label"> Current Position</label>
+    </div>
+    <div class="col-md-2">
+      <p>{{employeeResult.currentPosition}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label"> Technologies</label>
+    </div>
+    <div class="col-md-2">        
+      <p>{{employeeResult.technologies}}</p>
+    </div>
+  </div>
+  <hr>  
+  <legend class="text-info">Client Details</legend>
+  <br/>  
+  <div class="row" >    
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label" > Client Code</label>
+    </div>
+    <div class="col-md-2">
+      <p>{{employeeResult.client.code}}</p>
+    </div>
+  </div>
+  <div class="row" >    
+    <div class="col-md-2 offset-md-4">
+      <label class="mat-form-field-label" > Company Name</label>
+    </div>
+    <div class="col-md-2">
+      <p>{{employeeResult.client.name}}</p>
+    </div>
+  </div>
+  </div>
+</div>
+<nav>
+    <a routerLink="/" routerLinkActive="active">
+      <button mat-button>Go To Home Page</button>
+    </a>
+    <a routerLink="/employees" routerLinkActive="active">
+      <button mat-button >Consult Employees</button>
+    </a>
+</nav>

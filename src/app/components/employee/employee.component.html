@@ -1,0 +1,125 @@
+<h3>{{title}}</h3>
+<br>
+<div *ngIf="showAddAlert" class="alert alert-info" role="alert">
+    L'employé est bien ajouté
+</div>
+<div *ngIf="employeesResult && !this.EmployeeService.showForm">
+        <table mat-table [dataSource]="employeesResult" class="mat-elevation-z8">                                
+                  <!-- firstName Column -->
+                  <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> First Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.firstName}}</td>
+                  </ng-container>
+
+                  <!-- lastName Column -->
+                  <ng-container matColumnDef="lastName" align="center">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> Last Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.lastName}}</td>
+                  </ng-container>
+                
+                  <!-- birthDate Column -->
+                  <ng-container matColumnDef="birthDate">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> birth date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.birthDate}} </td>
+                  </ng-container>
+                
+                  <!-- currentPosition Column -->
+                  <ng-container matColumnDef="currentPosition">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> Current Position </th>
+                    <td mat-cell *matCellDef="let element"> {{element.currentPosition}} </td>
+                  </ng-container>
+                
+                  <!-- technologies Column -->
+                  <ng-container matColumnDef="technologies">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> Skills </th>
+                    <td mat-cell *matCellDef="let element"> {{element.technologies}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="client.name">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> client name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.client.name}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="consult">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> consult </th>  
+                        <td mat-cell (click)="handleConsult(element.employeeId)" *matCellDef="let element">  
+                            <button mat-icon-button color="primary">
+                             <mat-icon aria-label="Example icon-button with a heart icon">visibility</mat-icon>
+                           </button>
+                        </td>                                
+                  </ng-container>
+                  <ng-container matColumnDef="delete">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> delete </th>
+                        <td mat-cell *matCellDef="let element">                    
+                        <button mat-icon-button  (click)="openDialog(element.employeeId)"> 
+                                <mat-icon>delete</mat-icon>
+                            </button>     
+                        </td>
+                    </ng-container>
+                <ng-container matColumnDef="edit">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> edit </th>
+                        <td mat-cell *matCellDef="let element">                    
+                        <button mat-icon-button  (click)="handleUpdate(element.employeeId)"> 
+                                <mat-icon>edit</mat-icon>
+                            </button>     
+                        </td>
+                </ng-container>
+                
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                  <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                </table>
+</div>
+<ng-template  [ngIf]="!this.EmployeeService.showForm &&  !employeesResult" #elseBlock>Loading...</ng-template>
+<div *ngIf="this.EmployeeService.showForm" align="center">
+    <form class="employee-form" [formGroup]="employeeForm" (ngSubmit)="employeeForm.valid && handleSubmit(employeeForm)">
+        <fieldset>
+            <legend>Employee Information</legend>   
+            <mat-form-field class="example-full-width" >
+                    <input matInput placeholder="Enter Your First Name Here" formControlName="firstName" required name="firstName" [(ngModel)]="employeeModel.firstName" />
+                    <mat-error *ngIf="hasError('firstName', 'required')">This Field is mandatory</mat-error>                    
+                </mat-form-field>   
+            <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Enter Your Last Name Here" formControlName="lastName" required name="lastName"[(ngModel)]="employeeModel.lastName"/>
+                    <mat-error *ngIf="hasError('lastName', 'required')">This Field is mandatory</mat-error>                                        
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date of birth" formControlName="birthDate" id="dateOfBirth" 
+                    readonly (click)="picker.open()" [(ngModel)]="employeeModel.birthDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="hasError('birthDate', 'required')">This Field is mandatory</mat-error>                                                                        
+              </mat-form-field>
+            <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Enter Your Current Position Here" formControlName="currentPosition" required  name="currentPosition"[(ngModel)]="employeeModel.currentPosition"/>
+                    <mat-error *ngIf="hasError('currentPosition', 'required')">This Field is mandatory</mat-error>                                                            
+                </mat-form-field>
+            <mat-form-field class="example-full-width">
+                    <textarea matInput placeholder="Enter Your Technologies Here" formControlName="technologies" required  name="technologies"[(ngModel)]="employeeModel.technologies"></textarea>
+                    <mat-error *ngIf="hasError('technologies', 'required')">This Field is mandatory</mat-error>                                                            
+                </mat-form-field>
+        </fieldset>   
+        <fieldset>
+            <legend>Client Information</legend>    
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Enter Your Client Code Here" formControlName="clientCode" required name="code" [(ngModel)]="employeeModel.client.code">
+                <mat-error *ngIf="hasError('clientCode', 'required')">This Field is mandatory</mat-error>                                                                            
+            </mat-form-field>   
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Enter Your Client Name Here" formControlName="clientName" required name="name" [(ngModel)]="employeeModel.client.name">
+                <mat-error *ngIf="hasError('clientName', 'required')">This Field is mandatory</mat-error>                                                                            
+            </mat-form-field> 
+        </fieldset>
+        <div class="form-group">            
+            <button mat-button [disabled]="!employeeForm.valid" type="submit" >Submit</button> 
+            <button mat-button (click)="employeeForm.reset()">Reset</button> 
+        </div>
+        
+    </form>
+</div>
+<br/>
+<div *ngIf="!this.EmployeeService.showForm">
+<nav>
+        <a routerLink="/" routerLinkActive="active">
+          <button mat-button>Go To Home Page</button>
+        </a>
+</nav>
+</div>

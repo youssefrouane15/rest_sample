@@ -1,0 +1,48 @@
+<h3>Update your Employee</h3>
+<br>
+<div  align="center">
+  <form class="employee-form" [formGroup]="employeeForm" (ngSubmit)="employeeForm.valid && handleSubmit(employeeForm)">
+      <fieldset>
+          <legend>Employee Information</legend>   
+          <mat-form-field class="example-full-width" >
+                  <input matInput placeholder="Enter Your First Name Here" formControlName="firstName" required name="firstName" [(ngModel)]="employeeModel.firstName" />
+                  <mat-error *ngIf="hasError('firstName', 'required')">This Field is mandatory</mat-error>                    
+              </mat-form-field>   
+          <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter Your Last Name Here" formControlName="lastName" required name="lastName"[(ngModel)]="employeeModel.lastName"/>
+                  <mat-error *ngIf="hasError('lastName', 'required')">This Field is mandatory</mat-error>                                        
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+              <input matInput [matDatepicker]="picker" placeholder="Choose a date of birth" formControlName="birthDate" id="dateOfBirth" 
+                  readonly (click)="picker.open()" [(ngModel)]="employeeModel.birthDate" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="hasError('birthDate', 'required')">This Field is mandatory</mat-error>                                                                        
+            </mat-form-field>
+          <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter Your Current Position Here" formControlName="currentPosition" required  name="currentPosition"[(ngModel)]="employeeModel.currentPosition"/>
+                  <mat-error *ngIf="hasError('currentPosition', 'required')">This Field is mandatory</mat-error>                                                            
+              </mat-form-field>
+          <mat-form-field class="example-full-width">
+                  <textarea matInput placeholder="Enter Your Technologies Here" formControlName="technologies" required  name="technologies"[(ngModel)]="employeeModel.technologies"></textarea>
+                  <mat-error *ngIf="hasError('technologies', 'required')">This Field is mandatory</mat-error>                                                            
+              </mat-form-field>
+      </fieldset>   
+      <fieldset>
+          <legend>Client Information</legend>    
+          <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter Your Client Code Here" formControlName="clientCode" required name="code" [(ngModel)]="employeeModel.client.code">
+              <mat-error *ngIf="hasError('clientCode', 'required')">This Field is mandatory</mat-error>                                                                            
+          </mat-form-field>   
+          <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter Your Client Name Here" formControlName="clientName" required name="name" [(ngModel)]="employeeModel.client.name">
+              <mat-error *ngIf="hasError('clientName', 'required')">This Field is mandatory</mat-error>                                                                            
+          </mat-form-field> 
+      </fieldset>
+      <div class="form-group">            
+          <button mat-button [disabled]="!employeeForm.valid" type="submit" >Submit</button> 
+          <button mat-button (click)="employeeForm.reset()">Reset</button> 
+      </div>
+      
+  </form>
+</div>
