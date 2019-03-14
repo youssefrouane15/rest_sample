@@ -55,8 +55,7 @@
        <appender-ref ref="ASYNC_STDOUT"/>
     </logger> -->
     <logger name="org.springframework" level="INFO"/>
-    <logger name="org.hibernate.type" level="ALL"/>
-    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="org.hibernate" level="INFO"/>
 
     <root>
         <appender-ref ref="ASYNC_FILE"/>

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -29,15 +30,15 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ClientController {
-    private final Logger logger = ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME);
-    static Map<String, Logging> loggingMap = new HashMap<>();
+    private  Logger logger = ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME);
+    static Map<String, Level> loggingMap = new HashMap<>();
 
-    static {
-        loggingMap.put("DEBUG", new Logging(Level.DEBUG));
-        loggingMap.put("TRACE", new Logging(Level.TRACE));
-        loggingMap.put("INFO", new Logging(Level.INFO));
-        loggingMap.put("WARN", new Logging(Level.WARN));
-        loggingMap.put("ERROR", new Logging(Level.ERROR));
+     static {
+        loggingMap.put("DEBUG", Level.DEBUG );
+        loggingMap.put("TRACE", Level.TRACE );
+        loggingMap.put("INFO", Level.INFO );
+        loggingMap.put("WARN", Level.WARN );
+        loggingMap.put("ERROR", Level.ERROR );
     }
 
     private ClientServiceImpl clientServiceImp;
@@ -54,6 +55,7 @@ public class ClientController {
      */
     @GetMapping("/v1/clients")
     public List<Client> getAllClients() throws Exception {
+
         List<Client> clients = clientServiceImp.findAll();
         return clients;
     }
@@ -123,11 +125,11 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
-    @PostMapping("/level/{level}")
-    public ResponseEntity rootLogLevel(
+    @PostMapping(value = "/level/{level}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void rootLogLevel(
             @PathVariable("level") String logLevel) throws Exception {
-        return ResponseEntity.accepted().body(loggingMap.containsKey(logLevel.toUpperCase()) ? (logLevel.toUpperCase() + "is Accepted")
-                : ("Key (" + logLevel.toUpperCase() + ") doesn't exist"));
+              logger.setLevel(loggingMap.get(logLevel.toUpperCase()));
+
     }
     public ResponseEntity handle() {
         return new ResponseEntity(HttpStatus.OK);
