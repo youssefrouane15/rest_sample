@@ -1,0 +1,128 @@
+<div class="card" style="margin-top: 10%">
+  <div class="card-body">
+
+    <form [formGroup]="clientForm">
+      <br>
+      <div style="text-align:center">
+        <h2>Client Details</h2>
+      </div>
+      <br>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" formControlName="code" type="text" placeholder="Code Client" name="code" ngModel
+            [(ngModel)]="client.code" formControlName="code">
+          <div class="validation-error"  *ngIf="clientForm.controls['code'].errors?.required && clientForm.controls['code'].touched">
+            This Field is required.
+          </div>
+
+        </div>
+        <div class="form-group col-md-6">
+          <input class="form-control" type="date" name="dateCreation" ngModel [(ngModel)]="client.dateCreation"
+            placeholder="Date of creation " formControlName="dateCreation" required>
+          <div class="validation-error" *ngIf="clientForm.controls['dateCreation'].errors?.required && clientForm.controls['dateCreation'].touched">
+            This Field is required.
+          </div>
+
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" name="firstName" ngModel type="text" [(ngModel)]="client.firstName"
+            placeholder="First Name" formControlName="firstName" required>
+          <div  class="validation-error" *ngIf="clientForm.controls['firstName'].errors?.required && clientForm.controls['firstName'].touched">
+            This Field is required.
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <input class="form-control" name="lastName" ngModel type="text" [(ngModel)]="client.lastName"
+            placeholder="Last Name" formControlName="lastName">
+          <div class="validation-error" *ngIf="clientForm.controls['lastName'].errors?.required && clientForm.controls['lastName'].touched">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" type="email" placeholder="Email" name="email" ngModel
+            formControlName="email" [(ngModel)]="client.email">
+          <div>
+            <div class="validation-error" *ngIf="clientForm.controls['email'].errors?.required && clientForm.controls['email'].touched">
+              This Field is required.
+            </div>
+            <div  class="validation-error" *ngIf="clientForm.controls['email'].errors?.required && clientForm.controls['email'].errors?.email ">
+              Please enter a valid email address
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <input class="form-control" formControlName="numberPhone" type="text"  placeholder="Phone Number" name="numberPhone" ngModel
+            [(ngModel)]="client.numberPhone">
+          <div class="validation-error" *ngIf="clientForm.controls['numberPhone'].errors?.required && clientForm.controls['numberPhone'].touched">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div style="text-align:center">
+        <h2> Adress </h2>
+      </div>
+      <br>
+   
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" type="text" name="libelleCourt" ngModel
+            [(ngModel)]="client.adress.libelleCourt" placeholder="Libelle Courte" formControlName="libelleCourt">
+          <div class="validation-error" *ngIf="clientForm.controls['libelleCourt'].errors?.required && clientForm.controls['libelleCourt'].touched">
+            This Field is required.
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <input class="form-control" type="text" name="libelleLong" ngModel
+            [(ngModel)]=" client.adress.libelleLong" placeholder="Libelle Longue" formControlName="libelleLong">
+          <div class="validation-errort" *ngIf="clientForm.controls['libelleLong'].errors?.required && clientForm.controls['libelleLong'].touched">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" type="number" name="codePostal" ngModel
+            [(ngModel)]="client.adress.codePostal" placeholder="Code Postal" formControlName="codePostal">
+          <div  class="validation-error" *ngIf="clientForm.controls['codePostal'].errors?.required && clientForm.controls['codePostal'].touched">
+            This Field is required.
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <input class="form-control" type="text" name="ville" ngModel formControlName="ville"
+            [(ngModel)]=" client.adress.ville" placeholder="Ville">
+          <div class="validation-error" *ngIf="clientForm.controls['ville'].errors?.required && clientForm.controls['ville'].touched">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <input class="form-control" type="text" name="pay" ngModel [(ngModel)]="client.adress.pay" formControlName="pay"
+            placeholder="Country" >
+          <div class="validation-error" *ngIf="clientForm.controls['pay'].errors?.required && clientForm.controls['pay'].touched">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <button  type="submit"  (click)="onSubmit(client)"  class="btn btn-primary btn-block btn-info">
+            <i class="fa fa-floppy-o"></i> Save</button>
+        </div>
+        <div class="form-group col-md-3">
+          <button type="button" class="btn btn-primary btn-block" (click)="clientForm.reset()">
+            <i class="fa fa-repeat"></i> Reset</button>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

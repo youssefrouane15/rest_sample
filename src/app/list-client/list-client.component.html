@@ -1,0 +1,49 @@
+<div style="margin-top: 10%">
+<div style="text-align:center;">
+  <h2>List Of All Clients</h2> <br>
+</div>
+
+<table class="table-sm table-hover table-bordered table-lis">
+  <tr >  
+    <th class="td-col">Client ID</th>
+    <th class="td-col">First Name</th>
+    <th class="td-col">Last Name</th>
+    <th class="td-col">Code Client</th>
+    <th class="td-col">Phone Number</th>
+    <th class="td-col">Adress mail</th>
+    <th class="td-col">Date creation</th>
+    <th class="td-col">Adress</th>
+    <th class="td-col">Code Postal</th>
+    <th class="td-col">Ville-Country</th>
+  </tr>
+  <tr *ngFor="let client of clientList">
+    <td class="td-col">{{client.clientId}} </td>
+    <td class="td-col">{{client.firstName}} </td>
+    <td class="td-col">{{client.lastName}} </td>
+    <td class="td-col">{{client.code}}</td>
+    <td class="td-col">{{client.numberPhone}}</td>
+    <td class="td-col">{{client.email}}</td>
+    <td class="td-col">{{client.dateCreation}}</td>
+    <td class="td-col">{{client.adress.libelleCourt}}-{{client.adress.libelleLong}}</td>
+    <td class="td-col">{{client.adress.codePostal}}</td>
+    <td class="td-col">{{client.adress.ville}}- {{client.adress.pay}}</td>
+    <td class="td-col">
+      <a class="btn" (click)="show(client.clientId)">
+        <i class="fa fa-eye"></i>
+      </a>
+    </td>
+    <td class="td-col">
+      <a class="btn" (click)="showForEdit(client.clientId)">
+        <i class="fa fa-pencil-square-o"></i>
+      </a>
+    </td>
+    <td class="td-col">
+      <a class="btn text-danger" (click)="onDelete(client.clientId)">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </td>
+  </tr>
+</table>
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>

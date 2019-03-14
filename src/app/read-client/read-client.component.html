@@ -1,0 +1,32 @@
+<div class="card card-clt">
+  <div class="card-body">
+    <div style="text-align: center;">
+      <h2> Client Details</h2> <br>
+    </div>
+    <form class="form-group">
+      <div>
+        <div> <strong>Name: </strong>  {{client.firstName}}-{{client.lastName}}</div>
+        <div> <strong>Code Client:</strong> {{client.code}} </div>
+        <div> <strong>Phone Number:</strong> {{client.numberPhone}} </div>
+        <div> <strong>Adress Email:</strong>  {{client.email}} </div>
+        <div> <strong>Date Creation:</strong> {{client.dateCreation | date:'MM/dd/yyyy'}}
+        </div>
+        
+      </div>
+      <br>
+      <div>
+        <h4> Adress:</h4>
+      </div>
+      <br>
+      <div>
+        <strong>Adress: </strong> {{client.adress.libelleCourt}}-{{client.adress.libelleLong}} <br>
+        <strong>Code Postal:</strong> {{client.adress.codePostal}} <br>
+        <strong>Ville_ Pay:</strong> {{client.adress.ville}}-{{client.adress.pay}}<br>
+      </div>
+    </form>
+  </div>
+  <br>
+  <br>
+ <div style="text-align:center;">
+ <a [routerLink]="['/allClients']"> <h4>Exit</h4></a></div> 
+</div>

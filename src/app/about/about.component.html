@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <p style="margin-left: 88%; margin-top: 0%">{{lastUpdate | date: 'short'| uppercase }}</p>
+    </div>
+    <div class="panel panel-body">
+        <div style="margin-top: 10%">
+            <div style="text-align:center; color:green">
+              <h2>General Information</h2> <br>
+            </div>
+            
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Name: {{info.name}}</strong></li>
+          <li class="list-group-item"><strong>Adresse: {{info.adresse}}</strong></li>
+          <li class="list-group-item"><strong>Subject: {{info.sujet}}</strong></li>
+        </ul>
+      </div>
+      <br>
+      <form #f="ngForm" (ngSubmit)="onAddCommentaire(f.value)">
+        <div class="form-group">
+          <label class="control-label">Message</label>
+          <input class="form-control" name="title" required type="text-area" ngModel [(ngModel)]="commentaire.message">
+          <button type="submit" [disabled]="!commentaire.message" class="btn btn-primary"> Envoyer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
