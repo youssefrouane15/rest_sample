@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+form.clt-form{
+    background-color: #dbdbdb;
+    border-radius: 4px;
+    padding: 10px;
+}
+div.validation-error{
+    color: red;
+    text-align: center;
+}
+button:hover,a.btn:hover{
+    cursor: pointer;
+}
+
+body { 
+    font-family: Roboto, Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .basic-container {
+    padding: 30px;
+  }
+  
+  .version-info {
+    font-size: 8pt;
+    float: right;
+  }
+  .card-clt{
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+    }
+    .btn-delete{
+        width: 25%;
+        margin-left: 40%;
+        margin-top: 10%;
+        color: white;
+        background-color: green;
+    }
+    .btn-cancel{
+        width: 25%;
+        margin-left: 71%;
+        margin-top: -10%;
+    }
