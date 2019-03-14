@@ -1,15 +1,10 @@
 package com.rest.services;
 
 import com.rest.dao.ClientRepository;
-import com.rest.dao.EmployeeRepository;
-import com.rest.domains.Adress;
 import com.rest.domains.Client;
-import com.rest.domains.CurrentPosition;
-import com.rest.domains.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rest.exceptions.ClientException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,35 +18,86 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> findAll() {
-        return (List<Client>) clientRepository.findAll();
+    public List<Client> findAll() throws Exception{
+        List<Client> clients = new ArrayList<>();
+        try {
+            clients = (List<Client>) clientRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        return clients;
     }
 
     @Override
-    public Optional<Client> findById(long id) throws RuntimeException {
-        return clientRepository.findById(id);
+    public Optional<Client> findById(long id) throws Exception {
+        Optional<Client> client;
+        try {
+            client= clientRepository.findById(id);
+            if (!client.isPresent()) {
+                throw new ClientException(id);
+            }
+        } catch (ClientException e1) {
+            throw new ClientException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+        return client;
+
     }
 
     @Override
-    public Optional<Client> findByCode(String code) throws RuntimeException {
-        return clientRepository.findClientByCode(code);
+    public Optional<Client> findByCode(String code) throws Exception {
+
+        Optional<Client> client;
+        try {
+            client=  clientRepository.findClientByCode(code);
+            if (!client.isPresent()) {
+                throw new ClientException(code);
+            }
+        } catch (ClientException e1) {
+            throw new ClientException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+        return client;
+
 
     }
 
     @Override
-    public void save(Client c) {
+    public void save(Client c) throws Exception {
+        try {
         clientRepository.save(c);
-
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
     }
 
     @Override
-    public void delete() {
-        clientRepository.deleteAll();
+    public void delete() throws Exception {
+
+        try {
+            clientRepository.deleteAll();
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
     }
 
     @Override
-    public void deleteById(long id) {
-        clientRepository.deleteById(id);
+    public void deleteById(long id) throws Exception {
+        try {
+        Optional <Client>   client= clientRepository.findById(id);
+            if (!client.isPresent()) {
+                throw new ClientException(id);
+            }
+            clientRepository.deleteById(id);
+
+
+        } catch (ClientException e1) {
+            throw new ClientException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
     }
 
     @Override
@@ -59,8 +105,28 @@ public class ClientServiceImpl implements ClientService {
         return null;
     }
 
-    public void updateClient(Client client) {
-        clientRepository.save(client);
-    }
+    public void update(Client client, long ClientId) throws  Exception {
+        try {
+            Client clnt = clientRepository.findById(ClientId).get();
+            if (clnt == null) {
+                throw new ClientException(ClientId);
+            }
 
+
+            clnt.setCode(client.getCode());
+            clnt.setFirstName(client.getFirstName());
+            clnt.setLastName(client.getLastName());
+            clnt.setDateCreation(client.getDateCreation());
+            clnt.setEmail(client.getEmail());
+            client.setNumberPhone(client.getNumberPhone());
+            clnt.setAdress(client.getAdress());
+            clientRepository.save(client);
+
+        } catch (ClientException e1) {
+            throw new ClientException(e1.getMessage());
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+
+    }
 }

@@ -27,10 +27,7 @@ public class AdressSerciceImplTest {
         List<Adress> adresses = new ArrayList<>();
         Client client1 = new Client("1", "Societe generale");
         Client  client2 =new Client("2", "ALMA Group");
-        Adress adress  = new Adress("bellini","3 Rue","75008",client1);
-        Adress adress2  = new Adress("Boetie","Rue 124","75008",client2);
-        adresses.add(adress);
-        adresses.add(adress2);
+
         when(adressRepository.findAll()).thenReturn(adresses);
         assertEquals("bellini", adressServiceImpl.findAll().get(0).getLibelleCourt());
         assertEquals("Boetie", adressServiceImpl.findAll().get(1).getLibelleCourt());

@@ -11,18 +11,22 @@ public class Adress extends ResourceSupport {
     private long adressId;
     private String libelleCourt;
     private String libelleLong;
-    private String codePostal;
-    @OneToOne(mappedBy = "adress", fetch = FetchType.LAZY)
-    private Client client;
+    private Long codePostal;
+    private String pay;
+    private String  ville ;
+
+
+    //@OneToOne(mappedBy = "adress", fetch = FetchType.LAZY)
+    //private Client client;
 
     public Adress() {
     }
 
-    public Adress(String libelleCourt, String libelleLong, String codePostal, Client client) {
+    public Adress(String libelleCourt, String libelleLong, Long codePostaL) {
         this.libelleCourt = libelleCourt;
         this.libelleLong = libelleLong;
         this.codePostal = codePostal;
-        this.client = client;
+       // this.client = client;
     }
 
     public long getAdressId() {
@@ -37,7 +41,7 @@ public class Adress extends ResourceSupport {
         return libelleLong;
     }
 
-    public String getCodePostal() {
+    public long getCodePostal() {
         return codePostal;
     }
 
@@ -51,15 +55,45 @@ public class Adress extends ResourceSupport {
         this.libelleLong = libelleLong;
     }
 
-    public void setCodePostal(String codePostal) {
+    public void setCodePostal(Long codePostal) {
         this.codePostal = codePostal;
     }
 
-    public Client getClient() {
-        return client;
+
+
+    public String getPay() {
+        return pay;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setPay(String pay) {
+        this.pay = pay;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public Adress(String libelleCourt, String libelleLong, Long codePostal, String pay, String ville) {
+        this.libelleCourt = libelleCourt;
+        this.libelleLong = libelleLong;
+        this.codePostal = codePostal;
+        this.pay = pay;
+        this.ville = ville;
+    }
+
+    @Override
+    public String toString() {
+        return "Adress{" +
+                "adressId=" + adressId +
+                ", libelleCourt='" + libelleCourt + '\'' +
+                ", libelleLong='" + libelleLong + '\'' +
+                ", codePostal=" + codePostal +
+                ", pay='" + pay + '\'' +
+                ", ville='" + ville + '\'' +
+                '}';
     }
 }

@@ -23,10 +23,10 @@ public class AdressServiceImpl implements AdressService {
         List<Adress> adresses = new ArrayList<>();
         Client client1 = new Client("1", "Societe generale");
         Client  client2 =new Client("2", "ALMA Group");
-        Adress adress  = new Adress("bellini","3 Rue","75008",client1);
-        Adress adress2  = new Adress("Boetie","Rue 124","75008",client2);
-        adresses.add(adress);
-        adresses.add(adress2);
+        //Adress adress  = new Adress("bellini","3 Rue",new Long(75008),client1);
+        //Adress adress2  = new Adress("Boetie","Rue 124",new Long(75008),client2);
+        //adresses.add(adress);
+        //adresses.add(adress2);
 
         return adresses;
        // return (List<Adress>) adressRepository.findAll();

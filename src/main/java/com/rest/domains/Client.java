@@ -1,10 +1,10 @@
 package com.rest.domains;
 
+import java.util.Date;
 
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Client extends ResourceSupport {
@@ -13,9 +13,13 @@ public class Client extends ResourceSupport {
     @GeneratedValue
     private long clientId;
     private String code;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String numberPhone;
+    private String dateCreation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adress_id")
     private Adress adress;
 
@@ -23,13 +27,13 @@ public class Client extends ResourceSupport {
     public Client() {
     }
 
-    public Client(String code, String name) {
+    public Client(String code, String firstName) {
         this.code = code;
-        this.name = name;
+        this.firstName = firstName;
     }
-        public Client(String code, String name, Adress adress) {
+        public Client(String code, String firstName, Adress adress) {
         this.code = code;
-        this.name = name;
+        this.firstName = firstName;
         this.adress = adress;
     }
 
@@ -51,16 +55,6 @@ public class Client extends ResourceSupport {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
-    }
-
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Adress getAdress() {
         return adress;
     }
@@ -68,11 +62,63 @@ public class Client extends ResourceSupport {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
-  /*  public List<Employee> getEmployees() {
-        return employees;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }*/
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
+    }
+
+    public String getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(String dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Client(String code, String firstName, String lastName, String email, String numberPhone, String dateCreation) {
+        this.code = code;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.numberPhone = numberPhone;
+        this.dateCreation = dateCreation;
+    }
+
+    public Client(String code, String firstName, String lastName, String email, String numberPhone, String dateCreation, Adress adress) {
+        this.code = code;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.numberPhone = numberPhone;
+        this.dateCreation = dateCreation;
+        this.adress = adress;
+    }
 }
