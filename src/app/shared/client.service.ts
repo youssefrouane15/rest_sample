@@ -22,10 +22,10 @@ export class ClientService {
   selectedClient: Client;
   client: Client;
   clientList: Client[];
-  acess_token: string = "?access_token=3a5f2d63-0ec9-4115-9531-0355a5654733";
+  acess_token: string = "?access_token=396d71f4-48c5-4250-98c9-880d11b1ec0f";
   constructor(private http: HttpClient) {
     
-  
+
   }
   postClient (clt: Client):Observable<Client> {
     return this.http.post<Client>(apiUrl+this.acess_token, clt,httpOptions);
@@ -61,4 +61,8 @@ export class ClientService {
     return this.http.delete(`${apiUrl}/${id}` );
   }
 
+ 
+  postLevelLogger (level: string) {
+    return this.http.post("http://localhost:9966/agh/level/"+level+this.acess_token,httpOptions);
+}
 }

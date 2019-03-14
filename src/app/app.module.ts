@@ -31,6 +31,8 @@ import {
   MatMenuModule
 } from '@angular/material';
 import { ReadClientComponent } from './read-client/read-client.component';
+import { LoggerComponent } from './logger/logger.component';
+import { ChangeLoggerComponent } from './logger/change-logger/change-logger.component';
 
 
 
@@ -45,7 +47,9 @@ import { ReadClientComponent } from './read-client/read-client.component';
     AddClientComponent,
     EditClientComponent,
     PageNotFoundComponent,
-    ReadClientComponent
+    ReadClientComponent,
+    LoggerComponent,
+    ChangeLoggerComponent
   ],
   imports: [
     BrowserModule,
