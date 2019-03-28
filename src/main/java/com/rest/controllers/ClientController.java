@@ -4,10 +4,8 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.rest.domains.Client;
-import com.rest.domains.Logging;
 import com.rest.exceptions.ClientException;
 import com.rest.services.ClientServiceImpl;
-import com.rest.services.EmployeeServiceImpl;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
@@ -46,8 +44,7 @@ public class ClientController {
     /**
      * @param clientServiceImp Injection by constructor for the clientServiceImp
      */
-    public ClientController(ClientServiceImpl clientServiceImp, EmployeeServiceImpl employeeService) {
-        this.clientServiceImp = clientServiceImp;
+    public ClientController(ClientServiceImpl clientServiceImp) {this.clientServiceImp = clientServiceImp;
     }
 
     /**
@@ -55,11 +52,8 @@ public class ClientController {
      */
     @GetMapping("/v1/clients")
     public List<Client> getAllClients() throws Exception {
-
-        List<Client> clients = clientServiceImp.findAll();
-        return clients;
+        return clientServiceImp.findAll();
     }
-
     /**
      * @param id
      * @return client object; this method will get the client by id and il will genere
@@ -70,7 +64,6 @@ public class ClientController {
         Client client = clientServiceImp.findById(id).orElseThrow(() -> new ClientException(id));
         Resource<Client> resource = new Resource<>(client);
         resource.add(linkTo(methodOn(ClientController.class).getClientById(id)).withSelfRel());
-        logger.debug("Find Client By Client Id" + id);
         return resource;
     }
     /**
@@ -80,25 +73,21 @@ public class ClientController {
      */
     @GetMapping("/v1/clients/code/{code}")
     public Resource<Client> getClientByCode(@PathVariable(name = "code") String code) throws Exception {
-        Client client = clientServiceImp.findByCode(code).get();
-        Resource<Client> resource = new Resource<>(client);
-        resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("id").withType("GET"));
-        logger.debug("Get Client by Code" + code);
+        Resource<Client> resource= null;
+        if (clientServiceImp.findByCode(code).isPresent()) {
+                Client client = clientServiceImp.findByCode(code).get();
+            resource = new Resource<>(client);
+            resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("id").withType("GET"));
 
-        return resource;
     }
+        return resource;}
 
     /**
      * @param client Save a new client
      */
     @PostMapping("/v1/clients")
     public ResponseEntity<Object> saveClient(@RequestBody Client client) throws Exception {
-        System.out.println(client);
         clientServiceImp.save(client);
-        //Resource<Client> resource = new Resource<>(client);
-        //   resource.add(linkTo(methodOn(ClientController.class).getClientById(client.getClientId())).withRel("id"));
-        logger.debug("Save a new Client");
-
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
@@ -108,7 +97,6 @@ public class ClientController {
     @DeleteMapping("/v1/clients/{id}")
     public ResponseEntity<Object> deleteClient(@PathVariable(name = "id") long id) throws Exception {
         clientServiceImp.deleteById(id);
-        logger.debug("Delete  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.OK.value()).build();
     }
 
@@ -121,15 +109,13 @@ public class ClientController {
     public ResponseEntity<Object> updateClient(@RequestBody Client client,
                                                @PathVariable(name = "id") long id) throws Exception {
         clientServiceImp.update(client, id);
-        //logger.debug("Update  Client By Id" + id);
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 
     @PostMapping(value = "/level/{level}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void rootLogLevel(
-            @PathVariable("level") String logLevel) throws Exception {
-              logger.setLevel(loggingMap.get(logLevel.toUpperCase()));
-
+            @PathVariable("level") String logLevel) {
+        logger.setLevel(loggingMap.get(logLevel.toUpperCase()));
     }
     public ResponseEntity handle() {
         return new ResponseEntity(HttpStatus.OK);

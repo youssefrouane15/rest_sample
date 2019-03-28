@@ -17,5 +17,4 @@ public interface ClientService {
     public void delete()throws  Exception;
     public void deleteById(long id)throws  Exception;
 
-    public List<Client> findByAdress(String libelleCourt)throws  Exception;
 }

@@ -100,18 +100,11 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
-    @Override
-    public List<Client> findByAdress(String libelleCourt) {
-        return null;
-    }
 
-    public void update(Client client, long ClientId) throws  Exception {
+    public void update(Client client, long clientId) throws  Exception {
         try {
-            Client clnt = clientRepository.findById(ClientId).get();
-            if (clnt == null) {
-                throw new ClientException(ClientId);
-            }
-
+            if (clientRepository.findById(clientId).isPresent()) {
+                Client clnt = clientRepository.findById(clientId).get();
 
             clnt.setCode(client.getCode());
             clnt.setFirstName(client.getFirstName());
@@ -120,7 +113,7 @@ public class ClientServiceImpl implements ClientService {
             clnt.setEmail(client.getEmail());
             client.setNumberPhone(client.getNumberPhone());
             clnt.setAdress(client.getAdress());
-            clientRepository.save(client);
+            clientRepository.save(client);}
 
         } catch (ClientException e1) {
             throw new ClientException(e1.getMessage());
