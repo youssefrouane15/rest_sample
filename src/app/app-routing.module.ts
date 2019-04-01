@@ -7,9 +7,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EmployeeComponent } from './components/employee/employee.component';
+import { LoginComponent } from './components/login/login.component';
 
 const appRoutes: Routes = [
-  { path: '', 
+  {path: 'login',
+   component: LoginComponent
+  },
+  { path: 'home', 
     component: HomePageComponent 
   },
   { path: 'employees',      

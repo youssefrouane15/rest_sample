@@ -1,0 +1,16 @@
+<div  align="center">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="loginForm.valid && handleLogin(loginForm)">     
+          <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter Your Username Here" formControlName="username" required name="username" [(ngModel)]="username">
+              <mat-error *ngIf="hasError('username', 'required')">This Field is mandatory</mat-error>                                                                            
+          </mat-form-field>   
+          <mat-form-field class="example-full-width">
+              <input matInput type="password" placeholder="Enter Your Password Here" formControlName="password" required name="password" [(ngModel)]="password">
+              <mat-error *ngIf="hasError('password', 'required')">This Field is mandatory</mat-error>                                                                            
+          </mat-form-field> 
+      <div class="form-group">            
+          <button mat-button [disabled]="!loginForm.valid" type="submit" >Login</button> 
+      </div>
+      
+  </form>
+</div>

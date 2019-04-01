@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Employee } from './employee';
-import { EmployeeModel } from './employee-model';
+import { Employee } from '../employee';
+import { EmployeeModel } from '../employee-model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {catchError} from 'rxjs/operators'
-
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,12 +17,12 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class EmployeeService {
-  cachedValues: Array<{
-    [query: string]: Employee
+cachedValues : Array < {
+  [query : string]: Employee
 }> = [];
   showForm: boolean;
   baseUrl: string = "http://localhost:8080/agh/employees";
-  acess_token: string = "?access_token=95e0a202-87b8-4c65-a605-a30f28b81792";
+  access_token: string;
   employeeId: string;
   constructor(private http: HttpClient) { 
     this.http = http;
@@ -47,7 +46,7 @@ export class EmployeeService {
   };
   /** POST: add a new Emloyee to the database */
 addEmployee(employee: EmployeeModel): Observable<EmployeeModel> {
-  return this.http.post<EmployeeModel>(this.baseUrl + this.acess_token, employee, httpOptions)
+  return this.http.post<EmployeeModel>(this.baseUrl + '?access_token=' + this.access_token, employee, httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -55,7 +54,7 @@ addEmployee(employee: EmployeeModel): Observable<EmployeeModel> {
 
 /** UPDATE: update the given employee*/
 updateEmployee(employee: EmployeeModel): Observable<EmployeeModel> {
-  return this.http.put<EmployeeModel>(this.baseUrl +'/' + employee.id + this.acess_token, employee, httpOptions)
+  return this.http.put<EmployeeModel>(this.baseUrl +'/' + employee.id + '?access_token=' + this.access_token, employee, httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -63,7 +62,7 @@ updateEmployee(employee: EmployeeModel): Observable<EmployeeModel> {
 /** DELETE: delete the given employee from the database */
 deleteEmployee (id: string): Observable<{}> {
   const url = `${this.baseUrl}/${id}`; // DELETE api/heroes/42
-  return this.http.delete(url + this.acess_token, httpOptions)
+  return this.http.delete(url +  '?access_token=' + this.access_token, httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -75,7 +74,7 @@ getEmployees = (query: string): Promise<Employee> => {
       if (this.cachedValues[query]) {
         resolve(this.cachedValues[query])
       }else {
-        this.http.get(this.baseUrl + this.acess_token)
+        this.http.get(this.baseUrl +  '?access_token=' + this.access_token)
         .toPromise()
         .then( (response) => {
           resolve(response as Employee)
@@ -90,7 +89,7 @@ getEmployees = (query: string): Promise<Employee> => {
 /** GET: fetch for the given employee by Id from the database */
 getEmployee = (id: string): Promise<Employee> => {
     let promise = new Promise<Employee>((resolve, reject) => {
-        this.http.get(this.baseUrl + '/' +id + this.acess_token)
+        this.http.get(this.baseUrl + '/' +id + '?access_token=' + this.access_token)
         .toPromise()
         .then( (response) => {
           resolve(response as Employee)

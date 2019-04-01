@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {EmployeeModel} from '../../../employee-model'
 import {ClientModel} from '../../../client-model'
-import {EmployeeService} from '../../../employee.service';
+import {EmployeeService} from '../../../services/employee.service';
 import {Employee} from '../../../employee';
 @Component({
   selector: 'app-employee-details',

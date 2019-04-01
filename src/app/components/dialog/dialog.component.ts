@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {EmployeeService} from '../../employee.service';
+import {EmployeeService} from '../../services/employee.service';
 import {EmployeeComponent} from '../employee/employee.component'
 
 @Component({
@@ -23,7 +23,8 @@ export class DialogComponent implements OnInit {
     this.EmployeeService.deleteEmployee(this.EmployeeService.employeeId).subscribe((response) => {
       console.log(response);
       this.dialogRef.close();      
-      this.myRouter.navigate(['/'])      
+      this.myRouter.navigate(['/employees'])      
+
     }, (error) => {
       console.log(error);
       this.dialogRef.close();      

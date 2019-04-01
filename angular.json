@@ -62,7 +62,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-fundamentals:build:production"
+              "browserTarget": "angular-fundamentals:build:production",
+              "proxyConfig": "proxy.conf.json"
             }
           }
         },

@@ -4,10 +4,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import {EmployeeService} from './employee.service'
+import {EmployeeService} from './services/employee.service';
+import {AuthenticationService} from './services/authentication.service';
 import { EmployeeModel } from './employee-model';
 import { EmployeeComponent } from './components/employee/employee.component';
-import { DialogModal } from './components/employee/employee.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import {MatTableModule} from '@angular/material/table';
@@ -35,6 +35,24 @@ import { EmployeeUpdateComponent } from './components/employee/employee-update/e
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { LoginComponent } from './components/login/login.component';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {HttpInterceptor} from "@angular/common/http";
+import {HttpRequest} from "@angular/common/http";
+import {HttpHandler} from "@angular/common/http";
+
+@Injectable()
+export class XhrInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const xhr = req.clone({
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest').set('Authorization','Basic ' + btoa('my-trusted-client:secret'))
+      
+    });
+    return next.handle(xhr);
+  }
+}
 
 const modules = [
   MatButtonModule,
@@ -66,6 +84,7 @@ exports: [...modules],
     DialogComponent,
     HomePageComponent,
     NotFoundComponent,
+    LoginComponent
   ],
   entryComponents: [DialogComponent],
   imports: [
@@ -77,7 +96,8 @@ exports: [...modules],
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [EmployeeService],
+  providers: [EmployeeService, AuthenticationService, { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

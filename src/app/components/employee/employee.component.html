@@ -110,7 +110,10 @@
         </fieldset>
         <div class="form-group">            
             <button mat-button [disabled]="!employeeForm.valid" type="submit" >Submit</button> 
-            <button mat-button (click)="employeeForm.reset()">Reset</button> 
+            <button mat-button (click)="employeeForm.reset()">Reset</button>
+            <a routerLink="/home" routerLinkActive="active">
+                <button mat-button>Back</button>
+            </a>
         </div>
         
     </form>
@@ -118,7 +121,7 @@
 <br/>
 <div *ngIf="!this.EmployeeService.showForm">
 <nav>
-        <a routerLink="/" routerLinkActive="active">
+        <a routerLink="/home" routerLinkActive="active">
           <button mat-button>Go To Home Page</button>
         </a>
 </nav>
