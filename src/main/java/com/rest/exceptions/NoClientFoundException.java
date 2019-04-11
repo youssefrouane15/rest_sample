@@ -1,13 +1,13 @@
 package com.rest.exceptions;
 
-public class ClientException extends RuntimeException{
-    public ClientException(long id) {
+public class NoClientFoundException extends RuntimeException{
+    public NoClientFoundException(long id) {
         super("Client Not Found with id :" + id);
     }
-    public ClientException(String  code) {
+    public NoClientFoundException(String  code) {
         super("Client Not Found with code  :" + code);
     }
-    public ClientException(long id, Exception e ) {
+    public NoClientFoundException(long id, Exception e ) {
         super(e.getCause()+"Not Found Adress for client with id"+id);
     }
 

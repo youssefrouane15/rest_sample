@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.rest.domains.Client;
-import com.rest.exceptions.ClientException;
+import com.rest.exceptions.NoClientFoundException;
 import com.rest.services.ClientServiceImpl;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -57,11 +57,11 @@ public class ClientController {
     /**
      * @param id
      * @return client object; this method will get the client by id and il will genere
-     * @throws ClientException when client not found
+     * @throws NoClientFoundException when client not found
      */
     @GetMapping("/v1/clients/id/{clientId}")
-    public Resource<Client> getClientById(@PathVariable(name = "clientId") long id) throws Exception {
-        Client client = clientServiceImp.findById(id).orElseThrow(() -> new ClientException(id));
+    public Resource<Client> getClientById(@PathVariable(name = "clientId") long id) throws NoClientFoundException {
+        Client client = clientServiceImp.findById(id).orElseThrow(() -> new NoClientFoundException(id));
         Resource<Client> resource = new Resource<>(client);
         resource.add(linkTo(methodOn(ClientController.class).getClientById(id)).withSelfRel());
         return resource;
@@ -69,10 +69,10 @@ public class ClientController {
     /**
      * @param code
      * @return the client by code param if exist else
-     * @throws ClientException
+     * @throws NoClientFoundException
      */
     @GetMapping("/v1/clients/code/{code}")
-    public Resource<Client> getClientByCode(@PathVariable(name = "code") String code) throws Exception {
+    public Resource<Client> getClientByCode(@PathVariable(name = "code") String code) throws NoClientFoundException {
         Resource<Client> resource= null;
         if (clientServiceImp.findByCode(code).isPresent()) {
                 Client client = clientServiceImp.findByCode(code).get();
@@ -86,7 +86,7 @@ public class ClientController {
      * @param client Save a new client
      */
     @PostMapping("/v1/clients")
-    public ResponseEntity<Object> saveClient(@RequestBody Client client) throws Exception {
+    public ResponseEntity<Object> saveClient(@RequestBody Client client) throws NoClientFoundException {
         clientServiceImp.save(client);
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
@@ -95,7 +95,7 @@ public class ClientController {
      * @param id ; Delete client by id
      */
     @DeleteMapping("/v1/clients/{id}")
-    public ResponseEntity<Object> deleteClient(@PathVariable(name = "id") long id) throws Exception {
+    public ResponseEntity<Object> deleteClient(@PathVariable(name = "id") long id) throws NoClientFoundException {
         clientServiceImp.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK.value()).build();
     }
@@ -103,7 +103,7 @@ public class ClientController {
     /**
      * @param client, id
      *                update client with id id exist else throw exception
-     * @throws ClientException
+     * @throws NoClientFoundException
      */
     @PutMapping("/v1/clients/{id}")
     public ResponseEntity<Object> updateClient(@RequestBody Client client,
