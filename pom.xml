@@ -142,6 +142,19 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.6.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.6.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -153,7 +166,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                     <path>/agh</path>
                     <update>true</update>
-                    <port>9966</port>
+                    <port>8089</port>
                 </configuration>
             </plugin>
             <plugin>
