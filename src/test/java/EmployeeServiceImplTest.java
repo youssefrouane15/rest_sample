@@ -34,10 +34,4 @@ public class EmployeeServiceImplTest {
         assertEquals( employees.size(), employeeServiceImpl.findAll().size());
     }
 
-    @Test
-    public void testFindEmployeeByCode() throws Exception {
-        List<Employee> employees = new ArrayList<>();
-        when(employeeRepository.findEmployeeByClient_Code("1")).thenReturn(employees);
-        assertEquals(employees.size(), employeeServiceImpl.findByClientCode("1").size());
-    }
 }

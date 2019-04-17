@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -34,17 +33,6 @@ ClientServiceImpl clientServiceImpl =new ClientServiceImpl(clientRepository);
     assertEquals(clients.size(), clientServiceImpl.findAll().size());
     assertEquals("Societe generale", clientServiceImpl.findAll().get(0).getFirstName());
     assertEquals("ALMA Group", clientServiceImpl.findAll().get(1).getFirstName());
-}
-@Test
-public void testFindByCode() throws  Exception{
-    List<Client> clients = new ArrayList<>();
-    Client client1 = new Client("A1", "Societe generale", "SG", "sondes.hamza@gmail.com", "064455676", "10/10/1990");
-    Client  client2 =new Client("A2", "ALMA Group", "AG", "sondes.hamza@gmail.com", "076565764", "10/10/2000");
-    clients.add(client1);
-    clients.add(client2);
-
-    when(clientRepository.findClientByCode("A1").get()).thenReturn(client1);
-    assertEquals("Societe generale", clientServiceImpl.findByCode("A1").get().getFirstName());
 }
 
 }
