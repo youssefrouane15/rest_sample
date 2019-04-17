@@ -22,16 +22,5 @@ public class AdressSerciceImplTest {
     @InjectMocks
     AdressServiceImpl adressServiceImpl =new AdressServiceImpl(adressRepository);
 
-    @Test
-    public void testFindAllAdress(){
-        List<Adress> adresses = new ArrayList<>();
-        Client client1 = new Client("1", "Societe generale");
-        Client  client2 =new Client("2", "ALMA Group");
-
-        when(adressRepository.findAll()).thenReturn(adresses);
-        assertEquals("bellini", adressServiceImpl.findAll().get(0).getLibelleCourt());
-        assertEquals("Boetie", adressServiceImpl.findAll().get(1).getLibelleCourt());
-
-    }
 
 }
