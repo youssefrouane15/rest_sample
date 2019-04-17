@@ -31,6 +31,7 @@ ClientServiceImpl clientServiceImpl =new ClientServiceImpl(clientRepository);
     clients.add(client1);
     clients.add(client2);
     when(clientRepository.findAll()).thenReturn(clients);
+    assertEquals(clients.size(), clientServiceImpl.findAll().size());
     assertEquals("Societe generale", clientServiceImpl.findAll().get(0).getFirstName());
     assertEquals("ALMA Group", clientServiceImpl.findAll().get(1).getFirstName());
 }

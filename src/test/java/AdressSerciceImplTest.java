@@ -22,5 +22,12 @@ public class AdressSerciceImplTest {
     @InjectMocks
     AdressServiceImpl adressServiceImpl =new AdressServiceImpl(adressRepository);
 
+    @Test
+    public void testFindAllAdress(){
+        List<Adress> adresses = new ArrayList<>();
+
+        when(adressRepository.findAll()).thenReturn(adresses);
+        assertEquals(adresses.size(), adressServiceImpl.findAll().size());
+    }
 
 }
